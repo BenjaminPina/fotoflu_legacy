@@ -1,0 +1,86 @@
+object frmCopiar: TfrmCopiar
+  Left = 367
+  Height = 100
+  Top = 354
+  Width = 681
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Copiar archivos'
+  ClientHeight = 100
+  ClientWidth = 681
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '1.6.0.4'
+  object pbrAvance: TProgressBar
+    Left = 8
+    Height = 20
+    Top = 8
+    Width = 664
+    Smooth = True
+    TabOrder = 0
+    BarShowText = True
+  end
+  object sttOrigen: TStaticText
+    Left = 40
+    Height = 17
+    Top = 32
+    Width = 632
+    Caption = 'sttOrigen'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+  end
+  object sttDestino: TStaticText
+    Left = 40
+    Height = 17
+    Top = 56
+    Width = 630
+    Caption = 'sttDestino'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+  end
+  object Label1: TLabel
+    Left = 9
+    Height = 15
+    Top = 34
+    Width = 17
+    Caption = 'De:'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 9
+    Height = 15
+    Top = 56
+    Width = 11
+    Caption = 'A:'
+    ParentColor = False
+  end
+  object sttPos: TStaticText
+    Left = 573
+    Height = 17
+    Top = 80
+    Width = 97
+    Alignment = taCenter
+    Caption = 'sttPos'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 3
+  end
+end

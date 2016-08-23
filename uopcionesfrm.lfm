@@ -1,0 +1,136 @@
+object frmOpciones: TfrmOpciones
+  Left = 496
+  Height = 276
+  Top = 272
+  Width = 294
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Opciones'
+  ClientHeight = 276
+  ClientWidth = 294
+  Position = poScreenCenter
+  LCLVersion = '1.6.0.4'
+  object grbParametros: TGroupBox
+    Left = 8
+    Height = 224
+    Top = 8
+    Width = 272
+    Caption = 'Destinos'
+    ClientHeight = 204
+    ClientWidth = 268
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 9
+      Height = 15
+      Top = 8
+      Width = 79
+      Caption = 'Extensión RAW'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 8
+      Height = 15
+      Top = 56
+      Width = 62
+      Caption = 'Destino JPG'
+      ParentColor = False
+    end
+    object Label3: TLabel
+      Left = 9
+      Height = 15
+      Top = 104
+      Width = 69
+      Caption = 'Destino RAW'
+      ParentColor = False
+    end
+    object Label4: TLabel
+      Left = 8
+      Height = 15
+      Top = 152
+      Width = 114
+      Caption = 'Destino RAW Selectas'
+      ParentColor = False
+    end
+    object dbcRaw: TDBLookupComboBox
+      Left = 9
+      Height = 23
+      Top = 24
+      Width = 247
+      DataField = 'ext_raw'
+      DataSource = dmDatos.dsConfiguracion
+      KeyField = 'indice'
+      ListField = 'marca'
+      ListFieldIndex = 0
+      ListSource = dmDatos.dsExtensiones
+      LookupCache = False
+      Style = csDropDownList
+      TabOrder = 0
+    end
+    object dbcDJPG: TDBLookupComboBox
+      Left = 9
+      Height = 23
+      Top = 72
+      Width = 247
+      DataField = 'dest_jpg'
+      DataSource = dmDatos.dsConfiguracion
+      KeyField = 'id'
+      ListField = 'descripcion'
+      ListFieldIndex = 0
+      ListSource = dmDatos.dsDestinos
+      LookupCache = False
+      Style = csDropDownList
+      TabOrder = 1
+    end
+    object dbcDRaw: TDBLookupComboBox
+      Left = 9
+      Height = 23
+      Top = 120
+      Width = 247
+      DataField = 'dest_raw'
+      DataSource = dmDatos.dsConfiguracion
+      KeyField = 'id'
+      ListField = 'descripcion'
+      ListFieldIndex = 0
+      ListSource = dmDatos.dsDestinos
+      LookupCache = False
+      Style = csDropDownList
+      TabOrder = 2
+    end
+    object dbcDSelectas: TDBLookupComboBox
+      Left = 9
+      Height = 23
+      Top = 168
+      Width = 247
+      DataField = 'dest_selectas'
+      DataSource = dmDatos.dsConfiguracion
+      KeyField = 'id'
+      ListField = 'descripcion'
+      ListFieldIndex = 0
+      ListSource = dmDatos.dsDestinos
+      LookupCache = False
+      Style = csDropDownList
+      TabOrder = 3
+    end
+  end
+  object btnEstructura: TButton
+    Left = 8
+    Height = 25
+    Top = 240
+    Width = 184
+    Anchors = [akLeft, akBottom]
+    Caption = 'Establecer Estructura Directorios'
+    OnClick = btnEstructuraClick
+    TabOrder = 1
+  end
+  object BitBtn1: TBitBtn
+    Left = 205
+    Height = 27
+    Top = 240
+    Width = 75
+    Default = True
+    DefaultCaption = True
+    Kind = bkOK
+    ModalResult = 1
+    TabOrder = 2
+  end
+end

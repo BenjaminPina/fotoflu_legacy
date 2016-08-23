@@ -1,0 +1,7 @@
+backup
+iconos
+lib
+*.exe
+*.ini
+*.dll
+*.sqlite3

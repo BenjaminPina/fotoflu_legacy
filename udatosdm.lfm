@@ -1,0 +1,220 @@
+object dmDatos: TdmDatos
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 409
+  HorizontalOffset = 366
+  VerticalOffset = 217
+  Width = 543
+  object slcDatos: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = 'fotoflu.sqlite3'
+    KeepConnection = False
+    Transaction = sqtDatos
+    Options = []
+    left = 48
+    top = 16
+  end
+  object sqtDatos: TSQLTransaction
+    Active = False
+    Action = caCommit
+    Database = slcDatos
+    Options = []
+    left = 48
+    top = 80
+  end
+  object sqlConfiguracion: TSQLQuery
+    FieldDefs = <>
+    Database = slcDatos
+    Transaction = sqtDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id,'
+      '  directorio, ventana,'
+      '  ext_raw, dest_raw,'
+      '  dest_jpg,'
+      '  dest_selectas'
+      'FROM'
+      '  configuracion'
+    )
+    Options = []
+    Params = <>
+    left = 48
+    top = 136
+  end
+  object sqlExtensiones: TSQLQuery
+    FieldDefs = <>
+    Database = slcDatos
+    Transaction = sqtDatos
+    SQL.Strings = (
+      'SELECT'
+      '  indice, extension, marca'
+      'FROM'
+      '  extensiones'
+      'ORDER BY'
+      '  indice'
+    )
+    Options = []
+    Params = <>
+    left = 173
+    top = 136
+    object sqlExtensionesindice1: TLongintField
+      FieldKind = fkData
+      FieldName = 'indice'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqlExtensionesextension1: TMemoField
+      FieldKind = fkData
+      FieldName = 'extension'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      OnGetText = sqlExtensionesextension1GetText
+      BlobType = ftMemo
+      Transliterate = False
+    end
+    object sqlExtensionesmarca1: TMemoField
+      FieldKind = fkData
+      FieldName = 'marca'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      OnGetText = sqlExtensionesmarca1GetText
+      BlobType = ftMemo
+      Transliterate = False
+    end
+  end
+  object dsExtensiones: TDataSource
+    DataSet = sqlExtensiones
+    left = 173
+    top = 192
+  end
+  object dsConfiguracion: TDataSource
+    DataSet = sqlConfiguracion
+    left = 48
+    top = 192
+  end
+  object sqlDestinos: TSQLQuery
+    FieldDefs = <>
+    Database = slcDatos
+    Transaction = sqtDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id, descripcion'
+      'FROM'
+      '  destinos'
+      'ORDER BY'
+      '  id'
+    )
+    Options = []
+    Params = <>
+    UpdateMode = upWhereChanged
+    left = 272
+    top = 136
+    object sqlDestinosid1: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqlDestinosdescripcion1: TMemoField
+      FieldKind = fkData
+      FieldName = 'descripcion'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      OnGetText = sqlDestinosdescripcion1GetText
+      BlobType = ftMemo
+      Transliterate = False
+    end
+  end
+  object dsDestinos: TDataSource
+    DataSet = sqlDestinos
+    left = 272
+    top = 192
+  end
+  object sqlEliminaDestino: TSQLQuery
+    FieldDefs = <>
+    Database = slcDatos
+    Transaction = sqtDatos
+    SQL.Strings = (
+      'DELETE FROM'
+      '  destinos'
+      'WHERE'
+      '  id = :id'
+    )
+    Options = []
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptInput
+      end>
+    left = 48
+    top = 320
+  end
+  object sqlDirectorioAlta: TSQLQuery
+    FieldDefs = <>
+    Database = slcDatos
+    Transaction = sqtDatos
+    SQL.Strings = (
+      'INSERT INTO'
+      '  directorios'
+      '  (ruta, fecha)'
+      'VALUES'
+      '  (:dir, :hoy)'
+    )
+    Options = []
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'hoy'
+        ParamType = ptInput
+      end>
+    left = 173
+    top = 320
+  end
+  object sqlDirectorioExiste: TSQLQuery
+    FieldDefs = <>
+    Database = slcDatos
+    Transaction = sqtDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id'
+      'FROM'
+      '  directorios'
+      'WHERE'
+      '  ruta = :dir'
+      'LIMIT'
+      '  1'
+    )
+    Options = []
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptInput
+      end>
+    left = 48
+    top = 263
+  end
+end
