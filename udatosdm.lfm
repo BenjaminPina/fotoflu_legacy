@@ -5,29 +5,33 @@ object dmDatos: TdmDatos
   Height = 409
   HorizontalOffset = 366
   VerticalOffset = 217
-  Width = 543
-  object slcDatos: TSQLite3Connection
-    Connected = False
-    LoginPrompt = False
-    DatabaseName = 'fotoflu.sqlite3'
-    KeepConnection = False
-    Transaction = sqtDatos
-    Options = []
-    left = 48
-    top = 16
+  Width = 527
+  object dsExtensiones: TDataSource
+    DataSet = zqExtensiones
+    left = 173
+    top = 152
   end
-  object sqtDatos: TSQLTransaction
-    Active = False
-    Action = caCommit
-    Database = slcDatos
-    Options = []
+  object dsConfiguracion: TDataSource
+    DataSet = zqConfiguracion
     left = 48
-    top = 80
+    top = 152
   end
-  object sqlConfiguracion: TSQLQuery
-    FieldDefs = <>
-    Database = slcDatos
-    Transaction = sqtDatos
+  object dsDestinos: TDataSource
+    DataSet = zqDestinos
+    left = 272
+    top = 152
+  end
+  object zcDatos: TZConnection
+    ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = False
+    Port = 0
+    Database = 'C:\Benjamin\Lazarus\FotoFlu_2.0\fotoflu.sqlite3'
+    Protocol = 'sqlite-3'
+    left = 48
+    top = 24
+  end
+  object zqConfiguracion: TZQuery
+    Connection = zcDatos
     SQL.Strings = (
       'SELECT'
       '  id,'
@@ -38,28 +42,26 @@ object dmDatos: TdmDatos
       'FROM'
       '  configuracion'
     )
-    Options = []
     Params = <>
     left = 48
-    top = 136
+    top = 88
   end
-  object sqlExtensiones: TSQLQuery
-    FieldDefs = <>
-    Database = slcDatos
-    Transaction = sqtDatos
+  object zqExtensiones: TZQuery
+    Connection = zcDatos
     SQL.Strings = (
       'SELECT'
-      '  indice, extension, marca'
+      '  indice, '
+      '  extension,'
+      '  marca'
       'FROM'
       '  extensiones'
       'ORDER BY'
       '  indice'
     )
-    Options = []
     Params = <>
     left = 173
-    top = 136
-    object sqlExtensionesindice1: TLongintField
+    top = 88
+    object zqExtensionesindice1: TLongintField
       FieldKind = fkData
       FieldName = 'indice'
       Index = 0
@@ -68,7 +70,7 @@ object dmDatos: TdmDatos
       ReadOnly = False
       Required = False
     end
-    object sqlExtensionesextension1: TMemoField
+    object zqExtensionesextension1: TMemoField
       FieldKind = fkData
       FieldName = 'extension'
       Index = 1
@@ -76,11 +78,11 @@ object dmDatos: TdmDatos
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      OnGetText = sqlExtensionesextension1GetText
+      OnGetText = zqExtensionesextension1GetText
       BlobType = ftMemo
       Transliterate = False
     end
-    object sqlExtensionesmarca1: TMemoField
+    object zqExtensionesmarca1: TMemoField
       FieldKind = fkData
       FieldName = 'marca'
       Index = 2
@@ -88,39 +90,26 @@ object dmDatos: TdmDatos
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      OnGetText = sqlExtensionesmarca1GetText
+      OnGetText = zqExtensionesmarca1GetText
       BlobType = ftMemo
       Transliterate = False
     end
   end
-  object dsExtensiones: TDataSource
-    DataSet = sqlExtensiones
-    left = 173
-    top = 192
-  end
-  object dsConfiguracion: TDataSource
-    DataSet = sqlConfiguracion
-    left = 48
-    top = 192
-  end
-  object sqlDestinos: TSQLQuery
-    FieldDefs = <>
-    Database = slcDatos
-    Transaction = sqtDatos
+  object zqDestinos: TZQuery
+    Connection = zcDatos
     SQL.Strings = (
       'SELECT'
-      '  id, descripcion'
+      '  id, '
+      '  descripcion'
       'FROM'
       '  destinos'
-      'ORDER BY'
+      'ORDER BY '
       '  id'
     )
-    Options = []
     Params = <>
-    UpdateMode = upWhereChanged
     left = 272
-    top = 136
-    object sqlDestinosid1: TLongintField
+    top = 88
+    object zqDestinosid1: TLongintField
       FieldKind = fkData
       FieldName = 'id'
       Index = 0
@@ -129,7 +118,7 @@ object dmDatos: TdmDatos
       ReadOnly = False
       Required = False
     end
-    object sqlDestinosdescripcion1: TMemoField
+    object zqDestinosdescripcion1: TMemoField
       FieldKind = fkData
       FieldName = 'descripcion'
       Index = 1
@@ -137,66 +126,13 @@ object dmDatos: TdmDatos
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      OnGetText = sqlDestinosdescripcion1GetText
+      OnGetText = zqDestinosdescripcion1GetText
       BlobType = ftMemo
       Transliterate = False
     end
   end
-  object dsDestinos: TDataSource
-    DataSet = sqlDestinos
-    left = 272
-    top = 192
-  end
-  object sqlEliminaDestino: TSQLQuery
-    FieldDefs = <>
-    Database = slcDatos
-    Transaction = sqtDatos
-    SQL.Strings = (
-      'DELETE FROM'
-      '  destinos'
-      'WHERE'
-      '  id = :id'
-    )
-    Options = []
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'id'
-        ParamType = ptInput
-      end>
-    left = 48
-    top = 320
-  end
-  object sqlDirectorioAlta: TSQLQuery
-    FieldDefs = <>
-    Database = slcDatos
-    Transaction = sqtDatos
-    SQL.Strings = (
-      'INSERT INTO'
-      '  directorios'
-      '  (ruta, fecha)'
-      'VALUES'
-      '  (:dir, :hoy)'
-    )
-    Options = []
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'dir'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'hoy'
-        ParamType = ptInput
-      end>
-    left = 173
-    top = 320
-  end
-  object sqlDirectorioExiste: TSQLQuery
-    FieldDefs = <>
-    Database = slcDatos
-    Transaction = sqtDatos
+  object zqDirectorioExiste: TZQuery
+    Connection = zcDatos
     SQL.Strings = (
       'SELECT'
       '  id'
@@ -204,17 +140,79 @@ object dmDatos: TdmDatos
       '  directorios'
       'WHERE'
       '  ruta = :dir'
-      'LIMIT'
+      'LIMIT '
       '  1'
     )
-    Options = []
     Params = <    
       item
         DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptInput
+        ParamType = ptUnknown
       end>
     left = 48
-    top = 263
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqEliminaDestino: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'DELETE FROM'
+      '  destinos'
+      'WHERE'
+      '  id = :id'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+    left = 48
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqDirectorioAlta: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'INSERT INTO'
+      '  directorios '
+      '  (ruta, fecha)'
+      'VALUES'
+      '  (:dir, :hoy)'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'hoy'
+        ParamType = ptUnknown
+      end>
+    left = 173
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'hoy'
+        ParamType = ptUnknown
+      end>
   end
 end

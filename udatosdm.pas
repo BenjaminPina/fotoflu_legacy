@@ -5,7 +5,8 @@ unit udatosdm;
 interface
 
 uses
-  Classes, SysUtils, sqlite3conn, sqldb, db, FileUtil;
+  Classes, SysUtils, sqlite3conn, sqldb, db, FileUtil, ZConnection, ZDataset,
+  ZSqlUpdate;
 
 type
 
@@ -15,26 +16,32 @@ type
     dsDestinos: TDataSource;
     dsConfiguracion: TDataSource;
     dsExtensiones: TDataSource;
-    slcDatos: TSQLite3Connection;
-    sqlConfiguracion: TSQLQuery;
     sqlDestinosdescripcion1: TMemoField;
     sqlDestinosid1: TLongintField;
     sqlExtensionesextension1: TMemoField;
     sqlExtensionesindice1: TLongintField;
     sqlExtensionesmarca1: TMemoField;
-    sqlExtensiones: TSQLQuery;
-    sqlDestinos: TSQLQuery;
-    sqlEliminaDestino: TSQLQuery;
-    sqlDirectorioAlta: TSQLQuery;
-    sqlDirectorioExiste: TSQLQuery;
-    sqtDatos: TSQLTransaction;
+    zcDatos: TZConnection;
+    zqConfiguracion: TZQuery;
+    zqDestinosdescripcion1: TMemoField;
+    zqDestinosid1: TLongintField;
+    zqExtensiones: TZQuery;
+    zqDestinos: TZQuery;
+    zqDirectorioExiste: TZQuery;
+    zqEliminaDestino: TZQuery;
+    zqDirectorioAlta: TZQuery;
+    zqExtensionesextension1: TMemoField;
+    zqExtensionesindice1: TLongintField;
+    zqExtensionesmarca1: TMemoField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure sqlDestinosdescripcion1GetText(Sender: TField; var aText: string;
       DisplayText: Boolean);
-    procedure sqlExtensionesextension1GetText(Sender: TField;
-      var aText: string; DisplayText: Boolean);
-    procedure sqlExtensionesmarca1GetText(Sender: TField; var aText: string;
+    procedure zqDestinosdescripcion1GetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
+    procedure zqExtensionesextension1GetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
+    procedure zqExtensionesmarca1GetText(Sender: TField; var aText: string;
       DisplayText: Boolean);
   private
     FVersion: string;
@@ -79,22 +86,18 @@ implementation
 procedure TdmDatos.DataModuleCreate(Sender: TObject);
 begin
   FVersion := '1.9';
-  slcDatos.Open;
-  sqlConfiguracion.Open;
-  sqlConfiguracion.Edit;
-  sqlDestinos.Open;
-  sqtDatos.Active := True;
-  sqlExtensiones.Open;
+  zcDatos.Connect;
+  zqConfiguracion.Open;
+  zqDestinos.Open;
+  zqExtensiones.Open;
 end;
 
 procedure TdmDatos.DataModuleDestroy(Sender: TObject);
 begin
-  sqlExtensiones.Close;
-  sqlConfiguracion.Post;
-  sqlConfiguracion.ApplyUpdates;
-  sqtDatos.Commit;
-  sqlConfiguracion.Close;
-  slcDatos.Close;
+  zqConfiguracion.Close;
+  zqDestinos.Close;
+  zqExtensiones.Close;
+  zcDatos.Disconnect;
 end;
 
 procedure TdmDatos.sqlDestinosdescripcion1GetText(Sender: TField;
@@ -103,98 +106,100 @@ begin
   aText := Copy(sqlDestinosdescripcion1.AsString, 1, 50);
 end;
 
-procedure TdmDatos.sqlExtensionesextension1GetText(Sender: TField;
+procedure TdmDatos.zqDestinosdescripcion1GetText(Sender: TField;
   var aText: string; DisplayText: Boolean);
 begin
-  aText := Copy(sqlExtensionesextension1.AsString, 1, 50);
+  aText := Copy(zqDestinosdescripcion1.AsString, 1, 50);
 end;
 
-procedure TdmDatos.sqlExtensionesmarca1GetText(Sender: TField;
+procedure TdmDatos.zqExtensionesextension1GetText(Sender: TField;
   var aText: string; DisplayText: Boolean);
 begin
-  aText := Copy(sqlExtensionesmarca1.AsString, 1, 50);
+  aText := Copy(zqExtensionesextension1.AsString, 1, 50);
+end;
+
+procedure TdmDatos.zqExtensionesmarca1GetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := Copy(zqExtensionesmarca1.AsString, 1, 50);
 end;
 
 function TdmDatos.getDestJpg: Integer;
 begin
-  Result := sqlConfiguracion.FieldByName('dest_jpg').AsInteger;
+  Result := zqConfiguracion.FieldByName('dest_jpg').AsInteger;
 end;
 
 function TdmDatos.getDestRaw: Integer;
 begin
-  Result := sqlConfiguracion.FieldByName('dest_raw').AsInteger;
+  Result := zqConfiguracion.FieldByName('dest_raw').AsInteger;
 end;
 
 function TdmDatos.getDestSelectas: Integer;
 begin
-  Result := sqlConfiguracion.FieldByName('dest_raw').AsInteger;
+  Result := zqConfiguracion.FieldByName('dest_raw').AsInteger;
 end;
 
 function TdmDatos.getDirectorio: string;
 begin
-  Result := sqlConfiguracion.FieldByName('directorio').AsString;
+  Result := zqConfiguracion.FieldByName('directorio').AsString;
 end;
 
 function TdmDatos.getExtRaw: Integer;
 begin
-  Result := sqlConfiguracion.FieldByName('ext_raw').AsInteger;
+  Result := zqConfiguracion.FieldByName('ext_raw').AsInteger;
 end;
 
 function TdmDatos.getVentana: Integer;
 begin
-  Result := sqlConfiguracion.FieldByName('ventana').AsInteger;
+  Result := zqConfiguracion.FieldByName('ventana').AsInteger;
 end;
 
 function TdmDatos.getVersion: string;
 begin
-  Result := sqlConfiguracion.FieldByName('version').AsString;
+  Result := zqConfiguracion.FieldByName('version').AsString;
 end;
 
 procedure TdmDatos.setDestJpg(AValue: Integer);
 begin
-  sqlConfiguracion.FieldByName('dest_jpg').AsInteger := AValue;
+  zqConfiguracion.FieldByName('dest_jpg').AsInteger := AValue;
 end;
 
 procedure TdmDatos.setDestRaw(AValue: Integer);
 begin
-  sqlConfiguracion.FieldByName('dest_raw').AsInteger := AValue;
+  zqConfiguracion.FieldByName('dest_raw').AsInteger := AValue;
 end;
 
 procedure TdmDatos.setDestSelectas(AValue: Integer);
 begin
-  sqlConfiguracion.FieldByName('dest_selectas').AsInteger := AValue;
+  zqConfiguracion.FieldByName('dest_selectas').AsInteger := AValue;
 end;
 
 procedure TdmDatos.setDirectorio(AValue: string);
 begin
-  sqlConfiguracion.FieldByName('directorio').AsString := AValue;
+  zqConfiguracion.FieldByName('directorio').AsString := AValue;
 end;
 
 procedure TdmDatos.setExtRaw(AValue: Integer);
 begin
-  sqlConfiguracion.FieldByName('ext_raw').AsInteger := AValue;
+  zqConfiguracion.FieldByName('ext_raw').AsInteger := AValue;
 end;
 
 procedure TdmDatos.setVentana(AValue: Integer);
 begin
-  sqlConfiguracion.FieldByName('ventana').AsInteger := AValue;
+  zqConfiguracion.FieldByName('ventana').AsInteger := AValue;
 end;
 
 procedure TdmDatos.EliminaDestino(id: Integer);
 begin
-  sqlEliminaDestino.ParamByName('id').AsInteger := id;
-  sqlEliminaDestino.ExecSQL;
-  sqlConfiguracion.Close;
-  sqlDestinos.Close;
-  sqlConfiguracion.Open;
-  sqlDestinos.Open;
+  zqEliminaDestino.ParamByName('id').AsInteger := id;
+  zqEliminaDestino.ExecSQL;
 end;
 
 procedure TdmDatos.DirectorioAlta(Ruta: string);
 var
   i: Integer;
 begin
-  with sqlDirectorioExiste do
+  with zqDirectorioExiste do
   begin
     Close;
     ParamByName('dir').AsString := Ruta;
@@ -204,13 +209,12 @@ begin
     if i = 1 then
       Exit;  //-->
   end;
-  with sqlDirectorioAlta do
+  with zqDirectorioAlta do
   begin
     ParamByName('dir').AsString := Ruta;
     ParamByName('hoy').AsFloat := Now;
     ExecSQL;
   end;
-  sqtDatos.Commit;
 end;
 
 end.

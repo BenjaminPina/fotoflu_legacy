@@ -221,13 +221,12 @@ end;
 
 procedure TfrmPrincipal.CreaEstructura;
 var
-  i: Integer;
   Dir, s: string;
 begin
   Dir := stvDir.Path;
   dmDatos.DirectorioAlta(Dir);
   Dir := Dir + DirectorySeparator;
-  with dmDatos.sqlDestinos do
+  with dmDatos.zqDestinos do
   begin
     First;
     while not EOF do

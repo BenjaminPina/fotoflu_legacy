@@ -13,7 +13,7 @@ type
   { TfrmOpciones }
 
   TfrmOpciones = class(TForm)
-    BitBtn1: TBitBtn;
+    btbAceptar: TBitBtn;
     btnEstructura: TButton;
     dbcRaw: TDBLookupComboBox;
     dbcDJPG: TDBLookupComboBox;
@@ -24,6 +24,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    procedure btbAceptarClick(Sender: TObject);
     procedure btnEstructuraClick(Sender: TObject);
   private
     { private declarations }
@@ -37,7 +38,7 @@ var
 implementation
 
 uses
-  uEstructuraFrm;
+  uEstructuraFrm, udatosdm;
 
 {$R *.lfm}
 
@@ -48,6 +49,11 @@ begin
   frmEstructura := TfrmEstructura.Create(Application);
   frmEstructura.ShowModal;
   frmEstructura.Free;
+end;
+
+procedure TfrmOpciones.btbAceptarClick(Sender: TObject);
+begin
+  dmDatos.zqConfiguracion.ApplyUpdates;
 end;
 
 end.

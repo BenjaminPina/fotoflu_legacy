@@ -22,7 +22,6 @@ type
     spbBorrar: TSpeedButton;
     spbEditar: TSpeedButton;
     spbAceptar: TSpeedButton;
-    procedure DBNavigator1Click(Sender: TObject; Button: TDBNavButtonType);
     procedure FormShow(Sender: TObject);
     procedure spbAceptarClick(Sender: TObject);
     procedure spbAgregarClick(Sender: TObject);
@@ -46,13 +45,6 @@ uses
 
 { TfrmEstructura }
 
-procedure TfrmEstructura.DBNavigator1Click(Sender: TObject;
-  Button: TDBNavButtonType);
-begin
-  if Button = nbRefresh then
-    dmDatos.sqlDestinos.ApplyUpdates;
-end;
-
 procedure TfrmEstructura.FormShow(Sender: TObject);
 begin
   dbeDescripcion.Visible := False;
@@ -63,11 +55,6 @@ end;
 
 procedure TfrmEstructura.spbAceptarClick(Sender: TObject);
 begin
-  if dmDatos.sqlDestinos.State in [dsEdit, dsInsert] then
-  begin
-    dmDatos.sqlDestinos.Post;
-    dmDatos.sqlDestinos.ApplyUpdates;
-  end;
   dbeDescripcion.Visible := False;
   spbBorrar.Enabled := True;
   spbEditar.Enabled := True;
@@ -77,7 +64,7 @@ end;
 
 procedure TfrmEstructura.spbAgregarClick(Sender: TObject);
 begin
-  dmDatos.sqlDestinos.Insert;
+  dmDatos.zqDestinos.Insert;
   dbeDescripcion.Visible := True;
   spbBorrar.Enabled := False;
   spbEditar.Enabled := False;
@@ -90,10 +77,11 @@ begin
   dbeDescripcion.ReadOnly := True;
   if (MessageDlg('Eliminar Destino',
       '¿Estás seguro de borrar el destino "'
-      + dmDatos.sqlDestinos.FieldByName('descripcion').AsString + '"?',
+      + dmDatos.zqDestinos.FieldByName('descripcion').AsString + '"?',
       mtConfirmation, mbYesNo, 0) = mrYes) then
   begin
-    dmDatos.EliminaDestino(dmDatos.sqlDestinos.FieldByName('id').AsInteger);
+    dmDatos.EliminaDestino(dmDatos.zqDestinos.FieldByName('id').AsInteger);
+    dmDatos.zqDestinos.Refresh;
     ShowMessage('Destino Eliminado');
   end;
 end;
@@ -101,7 +89,6 @@ end;
 procedure TfrmEstructura.spbEditarClick(Sender: TObject);
 begin
   dbeDescripcion.Visible := True;
-  dmDatos.sqlDestinos.Edit;
   spbBorrar.Enabled := False;
   spbEditar.Enabled := False;
   spbAgregar.Enabled := False;
