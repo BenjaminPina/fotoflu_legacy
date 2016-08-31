@@ -4,13 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="11">
+    <Units Count="10">
       <Unit0>
         <Filename Value="FotoFlu.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
         <CursorPos X="14"/>
-        <UsageCount Value="176"/>
+        <UsageCount Value="180"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -20,9 +20,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPrincipalFrm"/>
-        <TopLine Value="424"/>
-        <CursorPos X="21" Y="456"/>
-        <UsageCount Value="176"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="146"/>
+        <CursorPos X="3" Y="148"/>
+        <UsageCount Value="180"/>
         <Bookmarks Count="1">
           <Item0 X="21" Y="465" ID="1"/>
         </Bookmarks>
@@ -38,8 +39,8 @@
         <UnitName Value="uEstructuraFrm"/>
         <EditorIndex Value="4"/>
         <TopLine Value="61"/>
-        <CursorPos X="14" Y="86"/>
-        <UsageCount Value="173"/>
+        <CursorPos X="24" Y="74"/>
+        <UsageCount Value="177"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -53,7 +54,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="31"/>
         <CursorPos X="76" Y="48"/>
-        <UsageCount Value="164"/>
+        <UsageCount Value="168"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit3>
@@ -66,7 +67,7 @@
         <UnitName Value="uCopiar"/>
         <EditorIndex Value="5"/>
         <CursorPos X="40" Y="18"/>
-        <UsageCount Value="156"/>
+        <UsageCount Value="160"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit4>
@@ -76,11 +77,10 @@
         <ComponentName Value="dmDatos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="250"/>
-        <CursorPos X="81" Y="8"/>
-        <UsageCount Value="123"/>
+        <TopLine Value="276"/>
+        <CursorPos X="16" Y="293"/>
+        <UsageCount Value="127"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit5>
@@ -92,151 +92,145 @@
         <UsageCount Value="4"/>
       </Unit6>
       <Unit7>
-        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\sysutils\finah.inc"/>
-        <TopLine Value="9"/>
-        <CursorPos X="10" Y="23"/>
-        <UsageCount Value="0"/>
-      </Unit7>
-      <Unit8>
         <Filename Value="rotaimg.pas"/>
         <UnitName Value="RotaImg"/>
         <UsageCount Value="2"/>
-      </Unit8>
-      <Unit9>
+      </Unit7>
+      <Unit8>
         <Filename Value="C:\lazarus\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="33"/>
         <CursorPos X="3" Y="49"/>
         <UsageCount Value="1"/>
-      </Unit9>
-      <Unit10>
+      </Unit8>
+      <Unit9>
         <Filename Value="C:\lazarus\components\lazutils\lazfileutils.pas"/>
         <UnitName Value="LazFileUtils"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="240"/>
         <UsageCount Value="5"/>
-      </Unit10>
+      </Unit9>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="238" Column="34" TopLine="215"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="454" Column="19" TopLine="442"/>
       </Position1>
       <Position2>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="239" Column="34" TopLine="216"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="453" Column="19" TopLine="441"/>
       </Position2>
       <Position3>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="62" Column="64" TopLine="48"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="454" Column="19" TopLine="442"/>
       </Position3>
       <Position4>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="265" Column="25" TopLine="240"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="455" Column="19" TopLine="443"/>
       </Position4>
       <Position5>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="465" Column="42" TopLine="450"/>
+        <Caret Line="456" Column="19" TopLine="444"/>
       </Position5>
       <Position6>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="466" Column="42" TopLine="451"/>
+        <Caret Line="455" Column="19" TopLine="443"/>
       </Position6>
       <Position7>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="468" Column="22" TopLine="452"/>
+        <Caret Line="456" Column="19" TopLine="444"/>
       </Position7>
       <Position8>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="479" Column="22" TopLine="453"/>
+        <Caret Line="457" Column="19" TopLine="445"/>
       </Position8>
       <Position9>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="428" Column="37" TopLine="421"/>
+        <Caret Line="456" Column="19" TopLine="444"/>
       </Position9>
       <Position10>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="475" Column="5" TopLine="460"/>
+        <Caret Line="457" Column="19" TopLine="445"/>
       </Position10>
       <Position11>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="469" Column="23" TopLine="455"/>
+        <Caret Line="458" Column="19" TopLine="446"/>
       </Position11>
       <Position12>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="468" Column="23" TopLine="454"/>
+        <Caret Line="459" Column="19" TopLine="447"/>
       </Position12>
       <Position13>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="467" Column="23" TopLine="453"/>
+        <Caret Line="458" Column="19" TopLine="446"/>
       </Position13>
       <Position14>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="466" Column="23" TopLine="452"/>
+        <Caret Line="459" Column="19" TopLine="447"/>
       </Position14>
       <Position15>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="465" Column="14" TopLine="455"/>
+        <Caret Line="303" Column="19" TopLine="293"/>
       </Position15>
       <Position16>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="466" Column="14" TopLine="456"/>
+        <Caret Line="302" Column="19" TopLine="292"/>
       </Position16>
       <Position17>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="465" Column="14" TopLine="455"/>
+        <Caret Line="301" Column="19" TopLine="291"/>
       </Position17>
       <Position18>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="264" Column="10" TopLine="240"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="300" Column="19" TopLine="290"/>
       </Position18>
       <Position19>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="466" Column="16" TopLine="455"/>
+        <Caret Line="299" Column="19" TopLine="289"/>
       </Position19>
       <Position20>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="264" Column="34" TopLine="242"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="298" Column="19" TopLine="288"/>
       </Position20>
       <Position21>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="467" Column="16" TopLine="456"/>
+        <Caret Line="297" Column="19" TopLine="287"/>
       </Position21>
       <Position22>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="466" Column="16" TopLine="455"/>
+        <Caret Line="296" Column="19" TopLine="286"/>
       </Position22>
       <Position23>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="8" Column="48"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="295" Column="19" TopLine="285"/>
       </Position23>
       <Position24>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="479" Column="36" TopLine="451"/>
+        <Caret Line="294" Column="19" TopLine="284"/>
       </Position24>
       <Position25>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="480" Column="36" TopLine="452"/>
+        <Caret Line="293" Column="19" TopLine="283"/>
       </Position25>
       <Position26>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="271" Column="13" TopLine="258"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="145" Column="3" TopLine="143"/>
       </Position26>
       <Position27>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="279" Column="5" TopLine="258"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="144" Column="3" TopLine="142"/>
       </Position27>
       <Position28>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="470" Column="42" TopLine="454"/>
+        <Caret Line="145" Column="3" TopLine="143"/>
       </Position28>
       <Position29>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="469" Column="42" TopLine="453"/>
+        <Caret Line="146" Column="3" TopLine="144"/>
       </Position29>
       <Position30>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="468" Column="42" TopLine="452"/>
+        <Caret Line="147" Column="3" TopLine="145"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

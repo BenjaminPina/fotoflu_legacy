@@ -36,6 +36,8 @@ type
     zqExtXid: TZQuery;
     zqArchivoAlta: TZQuery;
     zqArchivoExiste: TZQuery;
+    zqHaySelecciones: TZQuery;
+    zqSeleccionAlta: TZQuery;
     zqUltId: TZQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
@@ -56,6 +58,7 @@ type
     function getExtRaw: string;
     function getVentana: Integer;
     function getVersion: string;
+    function HaySelecciones: Boolean;
     procedure setDirectorio(AValue: string);
     procedure setVentana(AValue: Integer);
     procedure ArchivoAlta(Archivo: string);
@@ -64,6 +67,7 @@ type
     procedure EliminaDestino(id: Integer);
     procedure DirectorioAlta;
     procedure IniciaSeleccion(JPGs, Raws: TStringList);
+    procedure SeleccionAlta(Descripcion: string);
     property Directorio: string read getDirectorio write setDirectorio;
     property DirectorioID: Integer read FDirectorioID;
     property DestinoJPG: string read getDestinoJPG;
@@ -170,6 +174,17 @@ begin
   Result := zqConfiguracion.FieldByName('version').AsString;
 end;
 
+function TdmDatos.HaySelecciones: Boolean;
+begin
+  with zqHaySelecciones do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    Result := RecordCount = 1;
+    Close;
+  end;
+end;
+
 procedure TdmDatos.setDirectorio(AValue: string);
 begin
   zqConfiguracion.Edit;
@@ -273,6 +288,22 @@ begin
   Seleccionables.Free;
   NomArchRaw.Free;
   NomArchJPG.Free;
+  //crear selecciones por omisión
+  if not HaySelecciones then
+  begin
+    for i := 1 to 6 do
+      SeleccionAlta('Cambio ' + IntToStr(i));
+  end;
+end;
+
+procedure TdmDatos.SeleccionAlta(Descripcion: string);
+begin
+  with zqSeleccionAlta do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    ParamByName('des').AsString := Descripcion;
+    ExecSQL;
+  end;
 end;
 
 end.

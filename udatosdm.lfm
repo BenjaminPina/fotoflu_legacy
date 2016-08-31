@@ -339,4 +339,65 @@ object dmDatos: TdmDatos
         ParamType = ptUnknown
       end>
   end
+  object zqHaySelecciones: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id'
+      'FROM'
+      '  selecciones'
+      'WHERE'
+      '  directorio = :dir'
+      'LIMIT'
+      '  1'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 448
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqSeleccionAlta: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'INSERT INTO'
+      '  selecciones'
+      '  (directorio, descripcion)'
+      'VALUES'
+      '  (:dir, :des)'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'des'
+        ParamType = ptUnknown
+      end>
+    left = 352
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'des'
+        ParamType = ptUnknown
+      end>
+  end
 end

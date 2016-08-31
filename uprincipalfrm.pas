@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, LazFileUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, ShellCtrls, ValEdit, DefaultTranslator,
-  DBGrids, udatosdm, ComCtrls;
+  DBGrids, udatosdm, ComCtrls, DbCtrls;
 
 type
 
@@ -20,34 +20,34 @@ type
     btbExplorarImagenes: TBitBtn;
     btbCrearEstructura: TBitBtn;
     cmbFotos: TComboBox;
+    dbeCambio: TDBEdit;
+    dbgSelecciones: TDBGrid;
     grbDirectorio: TGroupBox;
     grbAcciones: TGroupBox;
     grbImagen: TGroupBox;
     grbEstadisticas: TGroupBox;
     imgImagen: TImage;
+    Label1: TLabel;
     scbPosicion: TScrollBar;
     spbIzq: TSpeedButton;
     spbDer: TSpeedButton;
-    spb9: TSpeedButton;
-    spb0: TSpeedButton;
-    spb1: TSpeedButton;
-    spb2: TSpeedButton;
-    spb3: TSpeedButton;
-    spb4: TSpeedButton;
-    spb5: TSpeedButton;
-    spb6: TSpeedButton;
-    spb7: TSpeedButton;
-    spb8: TSpeedButton;
-    spbBorrar: TSpeedButton;
     spbRotarAH: TSpeedButton;
     spbRotarH: TSpeedButton;
     spbNoRotar: TSpeedButton;
+    spbAgregaSeleccion: TSpeedButton;
+    spbEditaSeleccion: TSpeedButton;
+    spbEliminaSeleccion: TSpeedButton;
+    spbFiltrar: TSpeedButton;
+    spbSeleccionar: TSpeedButton;
+    spbDeseleccionar: TSpeedButton;
+    spbBorrar: TSpeedButton;
+    sttFiltro: TStaticText;
+    sttTotal: TStaticText;
     sttArchivo: TStaticText;
     sttPos: TStaticText;
     sttSel: TStaticText;
     stvDir: TShellTreeView;
     spbOpciones: TSpeedButton;
-    vleEstadisticas: TValueListEditor;
     procedure btbCrearEstructuraClick(Sender: TObject);
     procedure btbDistribuirClick(Sender: TObject);
     procedure btbExplorarImagenesClick(Sender: TObject);
@@ -291,11 +291,11 @@ begin
 end;
 
 procedure TfrmPrincipal.DespliegaEstadisticas;
-var
+{var
   i,
-  Total: Integer;
+  Total: Integer;}
 begin
-  Total := 0;
+ { Total := 0;
   for i := 1 to 9 do
     vleEstadisticas.Cells[0,i] := IntToStr(i);
   vleEstadisticas.Cells[0,10] := 'Total';
@@ -304,7 +304,7 @@ begin
     vleEstadisticas.Cells[1,i] := IntToStr(Contadores[i]);
     Total := Total + Contadores[i];
   end;
-  vleEstadisticas.Cells[1,10] := IntToStr(Total);
+  vleEstadisticas.Cells[1,10] := IntToStr(Total);}
 end;
 
 procedure TfrmPrincipal.Marca(Cambio: Integer);
