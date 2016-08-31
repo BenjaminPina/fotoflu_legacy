@@ -15,7 +15,6 @@ type
 
   TfrmPrincipal = class(TForm)
     BitBtn1: TBitBtn;
-    btbExportarJPG: TBitBtn;
     btbDistribuir: TBitBtn;
     btbExportarSelectas: TBitBtn;
     btbExplorarImagenes: TBitBtn;
@@ -52,7 +51,6 @@ type
     procedure btbCrearEstructuraClick(Sender: TObject);
     procedure btbDistribuirClick(Sender: TObject);
     procedure btbExplorarImagenesClick(Sender: TObject);
-    procedure btbExportarJPGClick(Sender: TObject);
     procedure btbExportarSelectasClick(Sender: TObject);
     procedure cmbFotosChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -74,10 +72,6 @@ type
   private
     { private declarations }
     bExportados: Boolean;
-    Origenes,
-    Destinos,
-    JPGs,
-    Raws: TStringList;
     Selectas: array of ShortInt;
     Contadores: array [1..9] of Word;
     Pos: Integer; //índice de archivo jpg actualmente visualizado
@@ -90,7 +84,6 @@ type
     procedure LlenaComboFotos;
   public
     { public declarations }
-    Dirs: TStringList;
   end;
 
 var
@@ -110,7 +103,6 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  Dirs := TStringList.Create;
   for i := 1 to 9 do
     Contadores[i] := 0;
   DespliegaEstadisticas;
@@ -159,11 +151,11 @@ end;
 procedure TfrmPrincipal.spbDerClick(Sender: TObject);
 begin
   //si es la última foto, regresar a la primera
-  if Pos < JPGs.Count then
+ { if Pos < JPGs.Count then
     Inc(Pos)
   else
     Pos := 1;
-  DespliegaFoto;
+  DespliegaFoto;  }
 end;
 
 procedure TfrmPrincipal.spbNoRotarClick(Sender: TObject);
@@ -181,11 +173,11 @@ end;
 procedure TfrmPrincipal.spbIzqClick(Sender: TObject);
 begin
   //si es la primer foto, saltar a la última
-  if Pos > 1 then
+  {if Pos > 1 then
     Dec(Pos)
   else
     Pos := JPGs.Count;
-  DespliegaFoto;
+  DespliegaFoto; }
 end;
 
 procedure TfrmPrincipal.spbRotarAHClick(Sender: TObject);
@@ -224,7 +216,7 @@ var
   Dir, s: string;
 begin
   Dir := stvDir.Path;
-  dmDatos.DirectorioAlta(Dir);
+  //dmDatos.DirectorioAlta(Dir);
   Dir := Dir + DirectorySeparator;
   with dmDatos.zqDestinos do
   begin
@@ -266,16 +258,16 @@ begin
   for i := 0 to Long - 1 do
     Selectas[i] := 0;
   //Inicializar indicadores de posición
-  sttArchivo.Caption := JPGs.Strings[0];
-  sttPos.Caption := '1/' + IntToStr(JPGs.Count);
+//  sttArchivo.Caption := JPGs.Strings[0];
+//  sttPos.Caption := '1/' + IntToStr(JPGs.Count);
   sttSel.Caption := '0';
   Pos := 1;
   LlenaComboFotos;
   cmbFotos.ItemIndex := 0;
-  scbPosicion.Max := JPGs.Count;
+//  scbPosicion.Max := JPGs.Count;
   scbPosicion.Position := 1;
   //Mostrar primera imagen
-  imgImagen.Picture.LoadFromFile(JPGs.Strings[0]);
+//  imgImagen.Picture.LoadFromFile(JPGs.Strings[0]);
   //Inicializar contadores y mostrar estadísticas
   for i := 1 to 9 do
     Contadores[i] := 0;
@@ -286,12 +278,12 @@ end;
 
 procedure TfrmPrincipal.DespliegaFoto;
 begin
-  sttArchivo.Caption := JPGs.Strings[Pos - 1];
-  sttPos.Caption := IntToStr(Pos) + '/' + IntToStr(JPGs.Count);
+//  sttArchivo.Caption := JPGs.Strings[Pos - 1];
+ // sttPos.Caption := IntToStr(Pos) + '/' + IntToStr(JPGs.Count);
   sttSel.Caption := IntToStr(Selectas[Pos - 1]);
   cmbFotos.ItemIndex := Pos - 1;
   scbPosicion.Position := Pos;
-  imgImagen.Picture.LoadFromFile(JPGs.Strings[Pos - 1]);
+//  imgImagen.Picture.LoadFromFile(JPGs.Strings[Pos - 1]);
   if spbRotarAH.Down then
     RotateBitmap90(imgImagen.Picture.Bitmap);
   if spbRotarH.Down then
@@ -333,18 +325,13 @@ var
   i: Integer;
 begin
   cmbFotos.Clear;
-  for i := 0 to JPGs.Count - 1 do
-    cmbFotos.Items.Add(ExtractFileName(JPGs.Strings[i]));//eliminar ruta de nombrearch
+//  for i := 0 to JPGs.Count - 1 do
+  //  cmbFotos.Items.Add(ExtractFileName(JPGs.Strings[i]));//eliminar ruta de nombrearch
 end;
 
 procedure TfrmPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction
   );
 begin
-  Dirs.Free;
-  Origenes.Free;
-  Destinos.Free;
-  JPGs.Free;
-  Raws.Free;
   frmOpciones.Free;
 end;
 
@@ -359,10 +346,6 @@ end;
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   bExportados := True;
-  Origenes := TStringList.Create;
-  Destinos := TStringList.Create;
-  JPGs := TStringList.Create;
-  Raws := TStringList.Create;
 end;
 
 procedure TfrmPrincipal.FormKeyUp(Sender: TObject; var Key: Word;
@@ -393,12 +376,14 @@ var
   DirOri,
   DirDest: string;
   i: Integer;
+  Origenes,
+  Destinos: TStringList;
 begin
-  Origenes.Clear;
-  Destinos.Clear;
-  DirOri := stvDir.Path + DirectorySeparator;
+  Origenes := TStringList.Create;
+  Destinos := TStringList.Create;
+  DirOri := dmDatos.Directorio;
   //copiar archivos JPG al subdirectorio correspondiente
-//  DirDest := stvDir.Path + DirectorySeparator + frmOpciones.cmbDJPG.Text + DirectorySeparator;
+  DirDest := dmDatos.DestinoJPG;
   if not DirectoryExists(DirDest) then
   begin
     MessageDlg('Error', 'No se ha creado el directorio destino para JPG.', mtError, [mbOK], 0);
@@ -413,17 +398,16 @@ begin
   frmCopiar.bPreservar := False;
   frmCopiar.ShowModal;
   frmCopiar.Free;
-
   Origenes.Clear;
   Destinos.Clear;
   //copiar archivos RAW al subdirectorio correspondiente
- // DirDest := stvDir.Path + DirectorySeparator + frmOpciones.cmbDRAW.Text + DirectorySeparator;
+  DirDest := dmDatos.DestinoRaw;
   if not DirectoryExists(DirDest) then
   begin
     MessageDlg('Error', 'No se ha creado el directorio destino para RAW.', mtError, [mbOK], 0);
     Exit; //-->
   end;
- // ObtenListaArchivos(DirOri, '*.' + ExtRaw.Strings[frmOpciones.cmbRAW.ItemIndex], Origenes);
+  ObtenListaArchivos(DirOri, '*.' + dmDatos.ExtRaw, Origenes);
   for i := 0 to Origenes.Count - 1 do
     Destinos.Add(DirDest + ExtractFileName(Origenes.Strings[i]));
   frmCopiar := TfrmCopiar.Create(Self);
@@ -432,7 +416,8 @@ begin
   frmCopiar.bPreservar := False;
   frmCopiar.ShowModal;
   frmCopiar.Free;
-
+  Origenes.Free;
+  Destinos.Free;
   MessageDlg('Los archivos fueron distribuidos.', mtInformation, [mbOK], 0);
 end;
 
@@ -440,10 +425,13 @@ procedure TfrmPrincipal.btbExplorarImagenesClick(Sender: TObject);
 var
   DirJPG,
   DirRaw: string;
+  JPGs,
+  Raws: TStringList;
+  //Seleccionables contiene todos los JPG's que tienen su correspondiente raw
 begin
   //obtener listas de archivos
-//  DirJPG := stvDir.Path + DirectorySeparator + frmOpciones.cmbDJPG.Text + DirectorySeparator;
- // DirRaw := stvDir.Path + DirectorySeparator + frmOpciones.cmbDRAW.Text + DirectorySeparator;;
+  DirJPG := dmDatos.DestinoJPG;
+  DirRaw := dmDatos.DestinoRaw;
   if not DirectoryExists(DirJPG) then
   begin
     MessageDlg('No existe el directorio de JPG.', mtError, [mbOK], 0);
@@ -454,94 +442,32 @@ begin
     MessageDlg('No existe el directorio de Raw.', mtError, [mbOK], 0);
     Exit; //-->
   end;
+  dmDatos.DirectorioAlta;
+  JPGs := TStringList.Create;
+  Raws := TStringList.Create;
   ObtenListaArchivos(DirJPG, '*.JPG', JPGs);
- // ObtenListaArchivos(DirRaw, '*.' + ExtRaw.Strings[frmOpciones.cmbRAW.ItemIndex], Raws);
+  ObtenListaArchivos(DirRaw, '*.' + dmDatos.ExtRaw, Raws);
   //verificar al menos un JPG
   if JPGs.Count = 0 then
   begin
     MessageDlg('No se encontraron achivos JPG para explorar.', mtError, [mbOK], 0);
+    JPGs.Free;
+    Raws.Free;
     Exit; //-->
   end;
   //verificar paridad JPG/RAW
   if JPGs.Count <> Raws.Count then
   begin
     MessageDlg('No coinciden las cantidades de archivos JPG y archivos Raw.' + #13#10
-        + 'Sólo podrá exportar JPG´s selectos.', mtWarning, [mbOK], 0);
-    btbExportarSelectas.Enabled := False;
-  end
-  else
-    btbExportarSelectas.Enabled := True;
+        + 'Las imágenes sin archivo Raw no serán desplegadas.', mtWarning, [mbOK], 0);
+  end;
+  dmDatos.IniciaSeleccion(JPGs, Raws);
+  {
   //iniciar revisión de archivos
   IniciaSeleccion(JPGs.Count);
-  grbImagen.SetFocus;
-end;
-
-procedure TfrmPrincipal.btbExportarJPGClick(Sender: TObject);
-var
-  ContBorr,
-  i: Integer;
-  ListaPorBorrar: TStringList;
-  DirDest: string;
-begin
-  ContBorr := 0;
-  ListaPorBorrar := TStringList.Create;
-  Origenes.Clear;
-  Destinos.Clear;
-  for i := 0 to JPGs.Count - 1 do
-  begin
-    if Selectas[i] > 0 then
-      Origenes.Add(JPGs.Strings[i])
-    else
-    begin
-      if Selectas[i] = - 1 then
-      begin
-        Inc(ContBorr);
-        ListaPorBorrar.Add(JPGs.Strings[i]);
-      end;
-    end;
-  end;
-  //DirDest := stvDir.Path + DirectorySeparator + frmOpciones.cmbDSelectas.Text + DirectorySeparator;
-  if not DirectoryExists(DirDest) then
-  begin
-   MessageDlg('No existe el directorio SELECTOS.', mtError, [mbOK], 0);
-   ListaPorBorrar.Free;
-   Exit; //-->
-  end;
-
-  //llenar lista de archivos destino
-  for i := 0 to Origenes.Count - 1 do
-    Destinos.Add(DirDest + ExtractFileName(Origenes.Strings[i]));
-
-  //si se marcaron archivos para borrar pedir confirmación
-  if ContBorr > 0 then
-  begin
-   if MessageDlg('¿Borrar archivos?'
-       , 'Se marcaron ' + IntToStr(ContBorr) + ' archivos para ser borrados.'
-       + '¿Confirma que desea eliminarlos?', mtConfirmation, mbYesNo, 0) = mrYes then
-   begin
-     for i := 0 to ListaPorBorrar.Count - 1 do
-       DeleteFile(ListaPorBorrar.Strings[i]);
-     MessageDlg('Los archivos marcados fueron eliminados.', mtInformation, [mbOK], 0);
-   end;
-  end;
-
-  //exportar los jpg selectos
-  frmCopiar := TfrmCopiar.Create(Self);
-  frmCopiar.Origenes := Origenes;
-  frmCopiar.Destinos := Destinos;
-  frmCopiar.bPreservar := True;
-  frmCopiar.ShowModal;
-  frmCopiar.Free;
-
-  ListaPorBorrar.Free;
-  bExportados := True;
-
-  if MessageDlg('FotoFlu', 'Se exportaron los archivos selectos.'
-      + '"Aceptar" parsa continuar en FotoFlu; "Cerrar" para salir'
-      , mtConfirmation, [mbOK, mbClose], 0) = mrOK then
-    btbExplorarImagenesClick(Self)
-  else
-    Close;
+  grbImagen.SetFocus; }
+  JPGs.Free;
+  Raws.Free;
 end;
 
 procedure TfrmPrincipal.btbExportarSelectasClick(Sender: TObject);
@@ -551,7 +477,7 @@ var
   ListaPorBorrar: TStringList;
   DirDest: string;
 begin
-  ContBorr := 0;
+  {ContBorr := 0;
   ListaPorBorrar := TStringList.Create;
   Origenes.Clear;
   Destinos.Clear;
@@ -610,7 +536,7 @@ begin
       , mtConfirmation, [mbOK, mbClose], 0) = mrOK then
     btbExplorarImagenesClick(Self)
   else
-    Close;
+    Close;  }
 end;
 
 procedure TfrmPrincipal.cmbFotosChange(Sender: TObject);

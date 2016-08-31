@@ -5,7 +5,7 @@ object dmDatos: TdmDatos
   Height = 409
   HorizontalOffset = 366
   VerticalOffset = 217
-  Width = 527
+  Width = 643
   object dsExtensiones: TDataSource
     DataSet = zqExtensiones
     left = 173
@@ -24,6 +24,9 @@ object dmDatos: TdmDatos
   object zcDatos: TZConnection
     ControlsCodePage = cCP_UTF8
     AutoEncodeStrings = False
+    Properties.Strings = (
+      'AutoEncodeStrings='
+    )
     Port = 0
     Database = 'C:\Benjamin\Lazarus\FotoFlu_2.0\fotoflu.sqlite3'
     Protocol = 'sqlite-3'
@@ -212,6 +215,127 @@ object dmDatos: TdmDatos
       item
         DataType = ftUnknown
         Name = 'hoy'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqDestinoxID: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  descripcion'
+      'FROM'
+      '  destinos'
+      'WHERE'
+      '  id = :id'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+    left = 173
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqExtXid: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  extension'
+      'FROM'
+      '  extensiones'
+      'WHERE'
+      '  indice = :id'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+    left = 272
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqUltId: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT '
+      '  last_insert_rowid() AS id'
+    )
+    Params = <>
+    left = 584
+    top = 216
+  end
+  object zqArchivoAlta: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'INSERT INTO'
+      '  archivos'
+      '  (directorio, seleccion, nombre)'
+      'VALUES'
+      ' (:dir, 0, :arc)'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'arc'
+        ParamType = ptUnknown
+      end>
+    left = 272
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'arc'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqArchivoExiste: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id'
+      'FROM'
+      '  archivos'
+      'WHERE'
+      '  nombre = :arc'
+      'LIMIT'
+      '  1'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'arc'
+        ParamType = ptUnknown
+      end>
+    left = 352
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'arc'
         ParamType = ptUnknown
       end>
   end
