@@ -579,11 +579,17 @@ object dmDatos: TdmDatos
       'SELECT'
       '  id,'
       '  nombre,'
-      '  seleccion'
+      '  seleccion,'
+      '  CASE seleccion'
+      '    WHEN 0 THEN ''No seleccionada'''
+      '    WHEN -1 THEN ''Para borrar'''
+      '  ELSE'
+      '    (SELECT descripcion FROM selecciones WHERE id = seleccion LIMIT 1)'
+      '  END cambio'
       'FROM'
       '  archivos'
       'WHERE'
-      '  directorio = :dir'
+      '  directorio =  :dir'
       'ORDER BY'
       '  nombre'
     )
@@ -626,6 +632,15 @@ object dmDatos: TdmDatos
       FieldKind = fkData
       FieldName = 'seleccion'
       Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object zqArchivoscambio1: TStringField
+      FieldKind = fkData
+      FieldName = 'cambio'
+      Index = 3
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False

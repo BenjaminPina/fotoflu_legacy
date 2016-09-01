@@ -127,7 +127,10 @@ end;
 procedure TfrmPrincipal.scbPosicionChange(Sender: TObject);
 begin
   if scbPosicion.Focused then
+  begin
+    dmDatos.FotoActual := scbPosicion.Position;
     DespliegaFoto;
+  end;
 end;
 
 procedure TfrmPrincipal.spbAgregaSeleccionClick(Sender: TObject);
@@ -137,12 +140,8 @@ end;
 
 procedure TfrmPrincipal.spbDerClick(Sender: TObject);
 begin
-  //si es la última foto, regresar a la primera
- { if Pos < JPGs.Count then
-    Inc(Pos)
-  else
-    Pos := 1;
-  DespliegaFoto;  }
+  dmDatos.SiguienteFoto;
+  DespliegaFoto;
 end;
 
 procedure TfrmPrincipal.spbEliminaSeleccionClick(Sender: TObject);
@@ -169,12 +168,8 @@ end;
 
 procedure TfrmPrincipal.spbIzqClick(Sender: TObject);
 begin
-  //si es la primer foto, saltar a la última
-  {if Pos > 1 then
-    Dec(Pos)
-  else
-    Pos := JPGs.Count;
-  DespliegaFoto; }
+  dmDatos.AnteriorFoto;
+  DespliegaFoto;
 end;
 
 procedure TfrmPrincipal.spbRotarAHClick(Sender: TObject);

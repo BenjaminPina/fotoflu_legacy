@@ -23,6 +23,7 @@ type
     sqlExtensionesindice1: TLongintField;
     sqlExtensionesmarca1: TMemoField;
     zcDatos: TZConnection;
+    zqArchivoscambio1: TStringField;
     zqArchivosid1: TLongintField;
     zqArchivosnombre1: TMemoField;
     zqArchivosseleccion1: TLongintField;
@@ -83,6 +84,7 @@ type
     function getVersion: string;
     function HaySelecciones: Boolean;
     procedure setDirectorio(AValue: string);
+    procedure setFotoActual(AValue: Integer);
     procedure setVentana(AValue: Integer);
     procedure ArchivoAlta(Archivo: string);
   public
@@ -93,6 +95,8 @@ type
     procedure SeleccionAlta(Descripcion: string);
     procedure AgregaCambio;
     procedure BorraCambio;
+    procedure SiguienteFoto;
+    procedure AnteriorFoto;
     property Directorio: string read getDirectorio write setDirectorio;
     property DirectorioID: Integer read FDirectorioID;
     property DestinoJPG: string read getDestinoJPG;
@@ -104,7 +108,7 @@ type
     property Seleccionadas: Integer read getSeleccionadas;
     property ParaBorrar: Integer read getParaBorrar;
     property TotalArchivos: Integer read getTotalArchivos;
-    property FotoActual: Integer read getFotoActual;
+    property FotoActual: Integer read getFotoActual write setFotoActual;
   end;
 
 var
@@ -270,6 +274,12 @@ begin
   zqConfiguracion.FieldByName('directorio').AsString := AValue;
 end;
 
+procedure TdmDatos.setFotoActual(AValue: Integer);
+begin
+  if AValue <= zqArchivos.RecordCount then
+    zqArchivos.RecNo := AValue;
+end;
+
 procedure TdmDatos.setVentana(AValue: Integer);
 begin
   zqConfiguracion.FieldByName('ventana').AsInteger := AValue;
@@ -420,6 +430,30 @@ begin
   zqDeselecciona.ParamByName('sel').AsInteger := id;
   zqDeselecciona.ExecSQL;
   zqSelecciones.Open;
+end;
+
+procedure TdmDatos.SiguienteFoto;
+begin
+  with zqArchivos do
+  begin
+    //¿última foto?
+    if not (RecordCount = RecNo) then
+      Next
+    else
+      First;
+  end;
+end;
+
+procedure TdmDatos.AnteriorFoto;
+begin
+  with zqArchivos do
+  begin
+    //¿primera foto?
+    if not (RecNo = 1) then
+      Prior
+    else
+      Last;
+  end;
 end;
 
 end.
