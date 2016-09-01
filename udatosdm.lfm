@@ -573,4 +573,68 @@ object dmDatos: TdmDatos
         ParamType = ptUnknown
       end>
   end
+  object zqArchivos: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id,'
+      '  nombre,'
+      '  seleccion'
+      'FROM'
+      '  archivos'
+      'WHERE'
+      '  directorio = :dir'
+      'ORDER BY'
+      '  nombre'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 448
+    top = 88
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    object zqArchivosid1: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object zqArchivosnombre1: TMemoField
+      FieldKind = fkData
+      FieldName = 'nombre'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      OnGetText = zqArchivosnombre1GetText
+      BlobType = ftMemo
+      Transliterate = False
+    end
+    object zqArchivosseleccion1: TLongintField
+      FieldKind = fkData
+      FieldName = 'seleccion'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+  end
+  object dsArchivos: TDataSource
+    DataSet = zqArchivos
+    left = 448
+    top = 152
+  end
 end

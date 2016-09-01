@@ -12,6 +12,7 @@ type
   { TdmDatos }
 
   TdmDatos = class(TDataModule)
+    dsArchivos: TDataSource;
     dsSelecciones: TDataSource;
     dsDestinos: TDataSource;
     dsConfiguracion: TDataSource;
@@ -22,6 +23,9 @@ type
     sqlExtensionesindice1: TLongintField;
     sqlExtensionesmarca1: TMemoField;
     zcDatos: TZConnection;
+    zqArchivosid1: TLongintField;
+    zqArchivosnombre1: TMemoField;
+    zqArchivosseleccion1: TLongintField;
     zqConfiguracion: TZQuery;
     zqDestinosdescripcion1: TMemoField;
     zqDestinosid1: TLongintField;
@@ -47,9 +51,12 @@ type
     zqTotParaBorrar: TZQuery;
     zqSeleccionBaja: TZQuery;
     zqDeselecciona: TZQuery;
+    zqArchivos: TZQuery;
     zqUltId: TZQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure zqArchivosnombre1GetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
     procedure zqDestinosdescripcion1GetText(Sender: TField; var aText: string;
       DisplayText: Boolean);
     procedure zqExtensionesextension1GetText(Sender: TField; var aText: string;
@@ -68,8 +75,10 @@ type
     function getDestinoJPG: string;
     function getDirectorio: string;
     function getExtRaw: string;
+    function getFotoActual: Integer;
     function getParaBorrar: Integer;
     function getSeleccionadas: Integer;
+    function getTotalArchivos: Integer;
     function getVentana: Integer;
     function getVersion: string;
     function HaySelecciones: Boolean;
@@ -94,6 +103,8 @@ type
     property Cambios: Integer read getCambios;
     property Seleccionadas: Integer read getSeleccionadas;
     property ParaBorrar: Integer read getParaBorrar;
+    property TotalArchivos: Integer read getTotalArchivos;
+    property FotoActual: Integer read getFotoActual;
   end;
 
 var
@@ -121,6 +132,12 @@ begin
   zqDestinos.Close;
   zqExtensiones.Close;
   zcDatos.Disconnect;
+end;
+
+procedure TdmDatos.zqArchivosnombre1GetText(Sender: TField; var aText: string;
+  DisplayText: Boolean);
+begin
+  aText := Copy(zqArchivosnombre1.AsString, 1, 200);
 end;
 
 procedure TdmDatos.zqDestinosdescripcion1GetText(Sender: TField;
@@ -189,6 +206,11 @@ begin
   end;
 end;
 
+function TdmDatos.getFotoActual: Integer;
+begin
+  Result := zqArchivos.RecNo;
+end;
+
 function TdmDatos.getParaBorrar: Integer;
 begin
    with zqTotParaBorrar do
@@ -209,6 +231,11 @@ begin
     Result := FieldByName('contador').AsInteger;
     Close;
   end;
+end;
+
+function TdmDatos.getTotalArchivos: Integer;
+begin
+  Result := zqArchivos.RecordCount;
 end;
 
 function TdmDatos.getDestinoJPG: string;
@@ -318,9 +345,6 @@ begin
   NomArchJPG := TStringList.Create;
   NomArchRaw := TStringList.Create;
   Ext := ExtRaw;
-  //verificar si no hay selección previa
-    //cargar selección previa
-  //generar listas de sólo nombres
   for i := 0 to JPGs.Count - 1 do
     NomArchJPG.Add(ExtractFileName(JPGs.Strings[i]));
   for i := 0 to Raws.Count - 1 do
@@ -348,6 +372,13 @@ begin
   end;
   //desplegar selecciones
   with zqSelecciones do
+  begin
+    Close;
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+  end;
+  //llenar listado de archivos
+  with zqArchivos do
   begin
     Close;
     ParamByName('dir').AsInteger := FDirectorioID;

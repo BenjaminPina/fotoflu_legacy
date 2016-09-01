@@ -2,10 +2,10 @@ object frmPrincipal: TfrmPrincipal
   Left = 246
   Height = 627
   Top = 147
-  Width = 1084
+  Width = 1099
   Caption = 'FotoFlu v.'
   ClientHeight = 627
-  ClientWidth = 1084
+  ClientWidth = 1099
   KeyPreview = True
   OnClose = FormClose
   OnKeyUp = FormKeyUp
@@ -15,7 +15,7 @@ object frmPrincipal: TfrmPrincipal
   ShowHint = True
   LCLVersion = '1.6.0.4'
   object BitBtn1: TBitBtn
-    Left = 995
+    Left = 1010
     Height = 30
     Top = 590
     Width = 83
@@ -26,7 +26,7 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 0
   end
   object grbDirectorio: TGroupBox
-    Left = 818
+    Left = 833
     Height = 126
     Top = 8
     Width = 260
@@ -50,7 +50,7 @@ object frmPrincipal: TfrmPrincipal
     end
   end
   object grbAcciones: TGroupBox
-    Left = 820
+    Left = 835
     Height = 123
     Top = 461
     Width = 260
@@ -386,17 +386,17 @@ object frmPrincipal: TfrmPrincipal
     Left = 8
     Height = 608
     Top = 8
-    Width = 804
+    Width = 819
     Anchors = [akTop, akLeft, akRight, akBottom]
     Caption = 'Imagen'
     ClientHeight = 588
-    ClientWidth = 800
+    ClientWidth = 815
     TabOrder = 3
     object imgImagen: TImage
       Left = 8
       Height = 492
       Top = 8
-      Width = 784
+      Width = 799
       Anchors = [akTop, akLeft, akRight, akBottom]
       OnClick = imgImagenClick
       Proportional = True
@@ -496,27 +496,8 @@ object frmPrincipal: TfrmPrincipal
       ShowHint = True
       ParentShowHint = False
     end
-    object sttSel: TStaticText
-      Left = 136
-      Height = 18
-      Top = 538
-      Width = 33
-      Anchors = [akLeft, akBottom]
-      BorderStyle = sbsSunken
-      Caption = 'sttSel'
-      Color = clWhite
-      Font.CharSet = ANSI_CHARSET
-      Font.Height = -13
-      Font.Name = 'Arial Black'
-      Font.Pitch = fpVariable
-      Font.Quality = fqDraft
-      Font.Style = [fsBold]
-      ParentFont = False
-      ParentColor = False
-      TabOrder = 0
-    end
     object sttPos: TStaticText
-      Left = 707
+      Left = 722
       Height = 18
       Top = 538
       Width = 82
@@ -530,34 +511,7 @@ object frmPrincipal: TfrmPrincipal
       Font.Quality = fqDraft
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 1
-    end
-    object sttArchivo: TStaticText
-      Left = 8
-      Height = 17
-      Top = 508
-      Width = 781
-      Anchors = [akLeft, akRight, akBottom]
-      Caption = 'sttArchivo'
-      Font.CharSet = ANSI_CHARSET
-      Font.Height = -13
-      Font.Name = 'Arial'
-      Font.Pitch = fpVariable
-      Font.Quality = fqDraft
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 2
-    end
-    object cmbFotos: TComboBox
-      Left = 573
-      Height = 23
-      Top = 536
-      Width = 124
-      Anchors = [akRight, akBottom]
-      ItemHeight = 15
-      OnChange = cmbFotosChange
-      Style = csDropDownList
-      TabOrder = 3
+      TabOrder = 0
     end
     object spbRotarAH: TSpeedButton
       Left = 224
@@ -702,13 +656,13 @@ object frmPrincipal: TfrmPrincipal
       Left = 8
       Height = 17
       Top = 564
-      Width = 781
+      Width = 796
       Anchors = [akLeft, akRight, akBottom]
       LargeChange = 10
       Min = 1
       PageSize = 1
       Position = 1
-      TabOrder = 4
+      TabOrder = 1
       OnChange = scbPosicionChange
     end
     object spbSeleccionar: TSpeedButton
@@ -855,12 +809,45 @@ object frmPrincipal: TfrmPrincipal
       Font.Name = '@Arial Unicode MS'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 5
+      TabOrder = 2
       Visible = False
+    end
+    object dbtArchivo: TDBText
+      Left = 8
+      Height = 15
+      Top = 512
+      Width = 799
+      Anchors = [akLeft, akRight, akBottom]
+      AutoSize = False
+      DataField = 'nombre'
+      DataSource = dmDatos.dsArchivos
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object dbtSel: TDBText
+      Left = 136
+      Height = 15
+      Hint = 'Cambio asignado'
+      Top = 540
+      Width = 32
+      Anchors = [akLeft, akBottom]
+      AutoSize = False
+      Color = clWhite
+      DataField = 'seleccion'
+      DataSource = dmDatos.dsArchivos
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
     end
   end
   object spbOpciones: TSpeedButton
-    Left = 820
+    Left = 835
     Height = 30
     Top = 590
     Width = 96
@@ -905,7 +892,7 @@ object frmPrincipal: TfrmPrincipal
     OnClick = spbOpcionesClick
   end
   object grbEstadisticas: TGroupBox
-    Left = 818
+    Left = 833
     Height = 312
     Top = 142
     Width = 260
@@ -1064,7 +1051,6 @@ object frmPrincipal: TfrmPrincipal
       CharCase = ecNormal
       MaxLength = 0
       TabOrder = 1
-      OnExit = dbeCambioExit
     end
     object Label1: TLabel
       Left = 80

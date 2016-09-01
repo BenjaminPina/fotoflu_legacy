@@ -19,9 +19,10 @@ type
     btbExportarSelectas: TBitBtn;
     btbExplorarImagenes: TBitBtn;
     btbCrearEstructura: TBitBtn;
-    cmbFotos: TComboBox;
     dbeCambio: TDBEdit;
     dbgSelecciones: TDBGrid;
+    dbtArchivo: TDBText;
+    dbtSel: TDBText;
     grbDirectorio: TGroupBox;
     grbAcciones: TGroupBox;
     grbImagen: TGroupBox;
@@ -44,9 +45,7 @@ type
     spbBorrar: TSpeedButton;
     sttFiltro: TStaticText;
     sttTotal: TStaticText;
-    sttArchivo: TStaticText;
     sttPos: TStaticText;
-    sttSel: TStaticText;
     sttCambios: TStaticText;
     sttBorrar: TStaticText;
     stvDir: TShellTreeView;
@@ -55,15 +54,12 @@ type
     procedure btbDistribuirClick(Sender: TObject);
     procedure btbExplorarImagenesClick(Sender: TObject);
     procedure btbExportarSelectasClick(Sender: TObject);
-    procedure cmbFotosChange(Sender: TObject);
-    procedure dbeCambioExit(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
     procedure imgImagenClick(Sender: TObject);
     procedure scbPosicionChange(Sender: TObject);
-    procedure spb1Click(Sender: TObject);
     procedure spbAgregaSeleccionClick(Sender: TObject);
     procedure spbDerClick(Sender: TObject);
     procedure spbEliminaSeleccionClick(Sender: TObject);
@@ -81,7 +77,6 @@ type
     procedure DespliegaFoto;
     procedure DespliegaEstadisticas;
     procedure Marca(Cambio: Integer);
-    procedure LlenaComboFotos;
   public
     { public declarations }
   end;
@@ -101,15 +96,12 @@ uses
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
-  sttArchivo.Caption := 'No se ha iniciado la exploración de archivos.';
   grbImagen.Enabled := False;
   grbEstadisticas.Enabled := False;
-  sttSel.Caption := '';
   sttPos.Caption := '0/0';
   sttCambios.Caption := '';
   sttTotal.Caption := '';
   sttBorrar.Caption := '';
-  cmbFotos.Clear;
   Caption := Caption + dmDatos.Version;
   if DirectoryExists(dmDatos.Directorio) then
     stvDir.Path := dmDatos.Directorio;
@@ -136,11 +128,6 @@ procedure TfrmPrincipal.scbPosicionChange(Sender: TObject);
 begin
   if scbPosicion.Focused then
     DespliegaFoto;
-end;
-
-procedure TfrmPrincipal.spb1Click(Sender: TObject);
-begin
-  Marca((Sender as TSpeedButton).Tag);
 end;
 
 procedure TfrmPrincipal.spbAgregaSeleccionClick(Sender: TObject);
@@ -226,7 +213,6 @@ var
   Dir, s: string;
 begin
   Dir := stvDir.Path;
-  //dmDatos.DirectorioAlta(Dir);
   Dir := Dir + DirectorySeparator;
   with dmDatos.zqDestinos do
   begin
@@ -263,15 +249,10 @@ end;
 procedure TfrmPrincipal.IniciaSeleccion;
 begin
   //Inicializar indicadores de posición
-//  sttArchivo.Caption := JPGs.Strings[0];
-//  sttPos.Caption := '1/' + IntToStr(JPGs.Count);
-  sttSel.Caption := '0';
-  LlenaComboFotos;
-  cmbFotos.ItemIndex := 0;
-//  scbPosicion.Max := JPGs.Count;
+  sttPos.Caption := '1/' + IntToStr(dmDatos.TotalArchivos);
+  scbPosicion.Max := dmDatos.TotalArchivos;
   scbPosicion.Position := 1;
-  //Mostrar primera imagen
-//  imgImagen.Picture.LoadFromFile(JPGs.Strings[0]);
+  DespliegaFoto;
   DespliegaEstadisticas;
   grbImagen.Enabled := True;
   grbEstadisticas.Enabled := True;
@@ -280,16 +261,14 @@ end;
 
 procedure TfrmPrincipal.DespliegaFoto;
 begin
-//  sttArchivo.Caption := JPGs.Strings[Pos - 1];
- // sttPos.Caption := IntToStr(Pos) + '/' + IntToStr(JPGs.Count);
- // sttSel.Caption := IntToStr(Selectas[Pos - 1]);
- // cmbFotos.ItemIndex := Pos - 1;
- // scbPosicion.Position := Pos;
-//  imgImagen.Picture.LoadFromFile(JPGs.Strings[Pos - 1]);
-  if spbRotarAH.Down then
-    RotateBitmap90(imgImagen.Picture.Bitmap);
-  if spbRotarH.Down then
-    RotateBitmap180(imgImagen.Picture.Bitmap);
+ sttPos.Caption := IntToStr(dmDatos.FotoActual) + '/'
+    + IntToStr(dmDatos.TotalArchivos);
+ scbPosicion.Position := dmDatos.FotoActual;
+ imgImagen.Picture.LoadFromFile(dbtArchivo.Caption);
+ if spbRotarAH.Down then
+  RotateBitmap90(imgImagen.Picture.Bitmap);
+ if spbRotarH.Down then
+  RotateBitmap180(imgImagen.Picture.Bitmap);
 end;
 
 procedure TfrmPrincipal.DespliegaEstadisticas;
@@ -313,15 +292,6 @@ begin
     Inc(Contadores[Cambio]);
   sttSel.Caption := IntToStr(Cambio);
   DespliegaEstadisticas;}
-end;
-
-procedure TfrmPrincipal.LlenaComboFotos;
-var
-  i: Integer;
-begin
-  cmbFotos.Clear;
-//  for i := 0 to JPGs.Count - 1 do
-  //  cmbFotos.Items.Add(ExtractFileName(JPGs.Strings[i]));//eliminar ruta de nombrearch
 end;
 
 procedure TfrmPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction
@@ -518,17 +488,6 @@ begin
     btbExplorarImagenesClick(Self)
   else
     Close;  }
-end;
-
-procedure TfrmPrincipal.cmbFotosChange(Sender: TObject);
-begin
-  DespliegaFoto;
-end;
-
-procedure TfrmPrincipal.dbeCambioExit(Sender: TObject);
-begin
-  if dmDatos.zqSelecciones.State = dsInsert then
-    dmDatos.zqSelecciones.ApplyUpdates;
 end;
 
 end.
