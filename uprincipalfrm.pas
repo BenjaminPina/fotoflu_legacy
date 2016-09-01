@@ -28,6 +28,8 @@ type
     grbEstadisticas: TGroupBox;
     imgImagen: TImage;
     Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     scbPosicion: TScrollBar;
     spbIzq: TSpeedButton;
     spbDer: TSpeedButton;
@@ -35,7 +37,6 @@ type
     spbRotarH: TSpeedButton;
     spbNoRotar: TSpeedButton;
     spbAgregaSeleccion: TSpeedButton;
-    spbEditaSeleccion: TSpeedButton;
     spbEliminaSeleccion: TSpeedButton;
     spbFiltrar: TSpeedButton;
     spbSeleccionar: TSpeedButton;
@@ -46,6 +47,8 @@ type
     sttArchivo: TStaticText;
     sttPos: TStaticText;
     sttSel: TStaticText;
+    sttCambios: TStaticText;
+    sttBorrar: TStaticText;
     stvDir: TShellTreeView;
     spbOpciones: TSpeedButton;
     procedure btbCrearEstructuraClick(Sender: TObject);
@@ -53,16 +56,17 @@ type
     procedure btbExplorarImagenesClick(Sender: TObject);
     procedure btbExportarSelectasClick(Sender: TObject);
     procedure cmbFotosChange(Sender: TObject);
+    procedure dbeCambioExit(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
-    procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
     procedure imgImagenClick(Sender: TObject);
     procedure scbPosicionChange(Sender: TObject);
     procedure spb1Click(Sender: TObject);
+    procedure spbAgregaSeleccionClick(Sender: TObject);
     procedure spbDerClick(Sender: TObject);
+    procedure spbEliminaSeleccionClick(Sender: TObject);
     procedure spbNoRotarClick(Sender: TObject);
     procedure spbOpcionesClick(Sender: TObject);
     procedure spbIzqClick(Sender: TObject);
@@ -71,13 +75,9 @@ type
     procedure stvDirChange(Sender: TObject; Node: TTreeNode);
   private
     { private declarations }
-    bExportados: Boolean;
-    Selectas: array of ShortInt;
-    Contadores: array [1..9] of Word;
-    Pos: Integer; //índice de archivo jpg actualmente visualizado
     procedure CreaEstructura;
     procedure ObtenListaArchivos(Directorio, Filtro: string; Lista: TStringList);
-    procedure IniciaSeleccion(Long: Integer);
+    procedure IniciaSeleccion;
     procedure DespliegaFoto;
     procedure DespliegaEstadisticas;
     procedure Marca(Cambio: Integer);
@@ -92,7 +92,7 @@ var
 implementation
 
 uses
-  uOpcionesFrm, uCopiar, LCLType, RotaImg;
+  uOpcionesFrm, uCopiar, LCLType, RotaImg, db;
 
 {$R *.lfm}
 
@@ -100,18 +100,16 @@ uses
 
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
-var
-  i: Integer;
 begin
-  for i := 1 to 9 do
-    Contadores[i] := 0;
-  DespliegaEstadisticas;
   sttArchivo.Caption := 'No se ha iniciado la exploración de archivos.';
   grbImagen.Enabled := False;
+  grbEstadisticas.Enabled := False;
   sttSel.Caption := '';
   sttPos.Caption := '0/0';
+  sttCambios.Caption := '';
+  sttTotal.Caption := '';
+  sttBorrar.Caption := '';
   cmbFotos.Clear;
-  {*************************}
   Caption := Caption + dmDatos.Version;
   if DirectoryExists(dmDatos.Directorio) then
     stvDir.Path := dmDatos.Directorio;
@@ -137,15 +135,17 @@ end;
 procedure TfrmPrincipal.scbPosicionChange(Sender: TObject);
 begin
   if scbPosicion.Focused then
-  begin
-    Pos := scbPosicion.Position;
     DespliegaFoto;
-  end;
 end;
 
 procedure TfrmPrincipal.spb1Click(Sender: TObject);
 begin
   Marca((Sender as TSpeedButton).Tag);
+end;
+
+procedure TfrmPrincipal.spbAgregaSeleccionClick(Sender: TObject);
+begin
+  dmDatos.AgregaCambio;
 end;
 
 procedure TfrmPrincipal.spbDerClick(Sender: TObject);
@@ -156,6 +156,16 @@ begin
   else
     Pos := 1;
   DespliegaFoto;  }
+end;
+
+procedure TfrmPrincipal.spbEliminaSeleccionClick(Sender: TObject);
+var
+  Cambio: string;
+begin
+  Cambio := dmDatos.zqSelecciones.FieldByName('descripcion').AsString;
+  if MessageDlg('¿Estás seguro de elminar el cambio "' + Cambio + '"?',
+      mtConfirmation, mbYesNo, 0) = mrYes then
+    dmDatos.BorraCambio;
 end;
 
 procedure TfrmPrincipal.spbNoRotarClick(Sender: TObject);
@@ -250,39 +260,31 @@ begin
   FindClose(SR);
 end;
 
-procedure TfrmPrincipal.IniciaSeleccion(Long: Integer);
-var
-  i: Integer;
+procedure TfrmPrincipal.IniciaSeleccion;
 begin
-  SetLength(Selectas, Long);
-  for i := 0 to Long - 1 do
-    Selectas[i] := 0;
   //Inicializar indicadores de posición
 //  sttArchivo.Caption := JPGs.Strings[0];
 //  sttPos.Caption := '1/' + IntToStr(JPGs.Count);
   sttSel.Caption := '0';
-  Pos := 1;
   LlenaComboFotos;
   cmbFotos.ItemIndex := 0;
 //  scbPosicion.Max := JPGs.Count;
   scbPosicion.Position := 1;
   //Mostrar primera imagen
 //  imgImagen.Picture.LoadFromFile(JPGs.Strings[0]);
-  //Inicializar contadores y mostrar estadísticas
-  for i := 1 to 9 do
-    Contadores[i] := 0;
   DespliegaEstadisticas;
   grbImagen.Enabled := True;
-  bExportados := False;
+  grbEstadisticas.Enabled := True;
+  grbImagen.SetFocus;
 end;
 
 procedure TfrmPrincipal.DespliegaFoto;
 begin
 //  sttArchivo.Caption := JPGs.Strings[Pos - 1];
  // sttPos.Caption := IntToStr(Pos) + '/' + IntToStr(JPGs.Count);
-  sttSel.Caption := IntToStr(Selectas[Pos - 1]);
-  cmbFotos.ItemIndex := Pos - 1;
-  scbPosicion.Position := Pos;
+ // sttSel.Caption := IntToStr(Selectas[Pos - 1]);
+ // cmbFotos.ItemIndex := Pos - 1;
+ // scbPosicion.Position := Pos;
 //  imgImagen.Picture.LoadFromFile(JPGs.Strings[Pos - 1]);
   if spbRotarAH.Down then
     RotateBitmap90(imgImagen.Picture.Bitmap);
@@ -291,25 +293,18 @@ begin
 end;
 
 procedure TfrmPrincipal.DespliegaEstadisticas;
-{var
-  i,
-  Total: Integer;}
 begin
- { Total := 0;
-  for i := 1 to 9 do
-    vleEstadisticas.Cells[0,i] := IntToStr(i);
-  vleEstadisticas.Cells[0,10] := 'Total';
-  for i := 1 to 9 do
+  with dmDatos do
   begin
-    vleEstadisticas.Cells[1,i] := IntToStr(Contadores[i]);
-    Total := Total + Contadores[i];
+    sttCambios.Caption := IntToStr(Cambios);
+    sttTotal.Caption := IntToStr(Seleccionadas);
+    sttBorrar.Caption := IntToStr(ParaBorrar);
   end;
-  vleEstadisticas.Cells[1,10] := IntToStr(Total);}
 end;
 
 procedure TfrmPrincipal.Marca(Cambio: Integer);
 begin
-  if Selectas[Pos - 1] = -1 then //¿estaba marcada para borrado?
+ { if Selectas[Pos - 1] = -1 then //¿estaba marcada para borrado?
     Selectas[Pos - 1] := 0;
   if Selectas[Pos - 1] <> 0 then //¿ya estaba seleccionada?
     Dec(Contadores[Selectas[Pos - 1]]);
@@ -317,7 +312,7 @@ begin
   if Cambio > 0 then
     Inc(Contadores[Cambio]);
   sttSel.Caption := IntToStr(Cambio);
-  DespliegaEstadisticas;
+  DespliegaEstadisticas;}
 end;
 
 procedure TfrmPrincipal.LlenaComboFotos;
@@ -335,22 +330,10 @@ begin
   frmOpciones.Free;
 end;
 
-procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: boolean);
-begin
-  if not bExportados then
-    Canclose := MessageDlg('Selectos sin Exportar', 'Se ha realizado selección de archivos '
-        + 'sin embargo éstos no han sido exportados. ¿Cerrar FotoFlu de todos modos?'
-          , mtWarning, mbYesNo, 0) = mrYes;
-end;
-
-procedure TfrmPrincipal.FormCreate(Sender: TObject);
-begin
-  bExportados := True;
-end;
-
 procedure TfrmPrincipal.FormKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+  {
   case Key of
     VK_RIGHT, VK_SPACE: spbDerClick(Self);
     VK_LEFT: spbIzqClick(Self);
@@ -360,7 +343,7 @@ begin
     VK_DELETE, 110: Marca(-1); //110 = punto de teclado numérico (Supr)
     96..105: Marca(Key - 96); //0..9 teclado numérico
     48..57: Marca(Key - 48); //0..9 teclado qwerty
-  end;
+  end; }
 end;
 
 procedure TfrmPrincipal.btbCrearEstructuraClick(Sender: TObject);
@@ -461,21 +444,19 @@ begin
     MessageDlg('No coinciden las cantidades de archivos JPG y archivos Raw.' + #13#10
         + 'Las imágenes sin archivo Raw no serán desplegadas.', mtWarning, [mbOK], 0);
   end;
-  dmDatos.IniciaSeleccion(JPGs, Raws);
-  {
   //iniciar revisión de archivos
-  IniciaSeleccion(JPGs.Count);
-  grbImagen.SetFocus; }
+  dmDatos.IniciaSeleccion(JPGs, Raws);
+  IniciaSeleccion;
   JPGs.Free;
   Raws.Free;
 end;
 
 procedure TfrmPrincipal.btbExportarSelectasClick(Sender: TObject);
-var
+{var
   ContBorr,
   i: Integer;
   ListaPorBorrar: TStringList;
-  DirDest: string;
+  DirDest: string; }
 begin
   {ContBorr := 0;
   ListaPorBorrar := TStringList.Create;
@@ -541,8 +522,13 @@ end;
 
 procedure TfrmPrincipal.cmbFotosChange(Sender: TObject);
 begin
-  Pos := cmbFotos.ItemIndex + 1;
   DespliegaFoto;
+end;
+
+procedure TfrmPrincipal.dbeCambioExit(Sender: TObject);
+begin
+  if dmDatos.zqSelecciones.State = dsInsert then
+    dmDatos.zqSelecciones.ApplyUpdates;
 end;
 
 end.

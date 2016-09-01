@@ -14,7 +14,7 @@ type
 
   TfrmEstructura = class(TForm)
     BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
+    btnAceptar: TBitBtn;
     dbeDescripcion: TDBEdit;
     dbgDestinos: TDBGrid;
     grbEstructura: TGroupBox;
@@ -49,8 +49,6 @@ procedure TfrmEstructura.FormShow(Sender: TObject);
 begin
   dbeDescripcion.Visible := False;
   spbAceptar.Enabled := False;
-  dbgDestinos.Columns.Items[0].Visible := False;
-  dbgDestinos.Columns.Items[1].Title.Caption := 'Destino';
 end;
 
 procedure TfrmEstructura.spbAceptarClick(Sender: TObject);
@@ -60,6 +58,8 @@ begin
   spbEditar.Enabled := True;
   spbAgregar.Enabled := True;
   spbAceptar.Enabled := False;
+  dmDatos.zqDestinos.ApplyUpdates;
+  dmDatos.zqDestinos.Refresh;
 end;
 
 procedure TfrmEstructura.spbAgregarClick(Sender: TObject);

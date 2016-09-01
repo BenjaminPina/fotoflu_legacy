@@ -3,9 +3,9 @@ object dmDatos: TdmDatos
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 409
-  HorizontalOffset = 366
-  VerticalOffset = 217
-  Width = 643
+  HorizontalOffset = 324
+  VerticalOffset = 216
+  Width = 847
   object dsExtensiones: TDataSource
     DataSet = zqExtensiones
     left = 173
@@ -120,8 +120,10 @@ object dmDatos: TdmDatos
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      Visible = False
     end
     object zqDestinosdescripcion1: TMemoField
+      DisplayLabel = 'Destinos'
       FieldKind = fkData
       FieldName = 'descripcion'
       Index = 1
@@ -275,7 +277,7 @@ object dmDatos: TdmDatos
       '  last_insert_rowid() AS id'
     )
     Params = <>
-    left = 584
+    left = 800
     top = 216
   end
   object zqArchivoAlta: TZQuery
@@ -397,6 +399,177 @@ object dmDatos: TdmDatos
       item
         DataType = ftUnknown
         Name = 'des'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqSelecciones: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id,'
+      '  descripcion,'
+      '  (SELECT '
+      '     COUNT(id) '
+      '   FROM'
+      '     archivos'
+      '   WHERE '
+      '      seleccion = selecciones.id) seleccionadas'
+      'FROM'
+      '  selecciones '
+      'WHERE'
+      '  directorio = :dir'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 352
+    top = 88
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    object zqSeleccionesid1: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Visible = False
+    end
+    object zqSeleccionesdescripcion1: TMemoField
+      DisplayLabel = 'Cambio'
+      FieldKind = fkData
+      FieldName = 'descripcion'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      OnGetText = zqSeleccionesdescripcion1GetText
+      BlobType = ftMemo
+      Transliterate = False
+    end
+    object zqSeleccionesseleccionadas1: TLongintField
+      DisplayLabel = 'Cont.'
+      DisplayWidth = 5
+      FieldKind = fkData
+      FieldName = 'seleccionadas'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+  end
+  object dsSelecciones: TDataSource
+    DataSet = zqSelecciones
+    left = 352
+    top = 152
+  end
+  object zqTotSel: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  count(id) contador'
+      'FROM'
+      '  archivos'
+      'WHERE'
+      '  directorio = :dir'
+      '  AND seleccion > 0'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 552
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqTotParaBorrar: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  count(id) contador'
+      'FROM'
+      '  archivos'
+      'WHERE'
+      '  directorio = :dir'
+      '  AND seleccion = -1'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 640
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqSeleccionBaja: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'DELETE FROM'
+      '  selecciones'
+      'WHERE'
+      '  id = :id'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+    left = 448
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqDeselecciona: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'UPDATE'
+      '  archivos'
+      'SET'
+      '  seleccion = 0'
+      'WHERE'
+      '  seleccion = :sel'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'sel'
+        ParamType = ptUnknown
+      end>
+    left = 552
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'sel'
         ParamType = ptUnknown
       end>
   end

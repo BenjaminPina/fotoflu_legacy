@@ -12,6 +12,7 @@ type
   { TdmDatos }
 
   TdmDatos = class(TDataModule)
+    dsSelecciones: TDataSource;
     dsDestinos: TDataSource;
     dsConfiguracion: TDataSource;
     dsExtensiones: TDataSource;
@@ -38,6 +39,14 @@ type
     zqArchivoExiste: TZQuery;
     zqHaySelecciones: TZQuery;
     zqSeleccionAlta: TZQuery;
+    zqSelecciones: TZQuery;
+    zqSeleccionesdescripcion1: TMemoField;
+    zqSeleccionesid1: TLongintField;
+    zqSeleccionesseleccionadas1: TLongintField;
+    zqTotSel: TZQuery;
+    zqTotParaBorrar: TZQuery;
+    zqSeleccionBaja: TZQuery;
+    zqDeselecciona: TZQuery;
     zqUltId: TZQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
@@ -47,15 +56,20 @@ type
       DisplayText: Boolean);
     procedure zqExtensionesmarca1GetText(Sender: TField; var aText: string;
       DisplayText: Boolean);
+    procedure zqSeleccionesdescripcion1GetText(Sender: TField;
+      var aText: string; DisplayText: Boolean);
   private
     FDirectorioID: Integer;
     FVersion: string;
     { private declarations }
+    function getCambios: Integer;
     function getDestinoRaw: string;
     function getDestinoxID(id: Integer): string;
     function getDestinoJPG: string;
     function getDirectorio: string;
     function getExtRaw: string;
+    function getParaBorrar: Integer;
+    function getSeleccionadas: Integer;
     function getVentana: Integer;
     function getVersion: string;
     function HaySelecciones: Boolean;
@@ -68,6 +82,8 @@ type
     procedure DirectorioAlta;
     procedure IniciaSeleccion(JPGs, Raws: TStringList);
     procedure SeleccionAlta(Descripcion: string);
+    procedure AgregaCambio;
+    procedure BorraCambio;
     property Directorio: string read getDirectorio write setDirectorio;
     property DirectorioID: Integer read FDirectorioID;
     property DestinoJPG: string read getDestinoJPG;
@@ -75,6 +91,9 @@ type
     property Version: string read FVersion;
     property Ventana: Integer read getVentana write setVentana;
     property ExtRaw: string read getExtRaw;
+    property Cambios: Integer read getCambios;
+    property Seleccionadas: Integer read getSeleccionadas;
+    property ParaBorrar: Integer read getParaBorrar;
   end;
 
 var
@@ -122,6 +141,12 @@ begin
   aText := Copy(zqExtensionesmarca1.AsString, 1, 50);
 end;
 
+procedure TdmDatos.zqSeleccionesdescripcion1GetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := Copy(zqSeleccionesdescripcion1.AsString, 1, 50);
+end;
+
 function TdmDatos.getDestinoxID(id: Integer): string;
 begin
    with zqDestinoxID do
@@ -141,6 +166,11 @@ begin
   Result := getDestinoxID(zqConfiguracion.FieldByName('dest_raw').AsInteger);
 end;
 
+function TdmDatos.getCambios: Integer;
+begin
+  Result := zqSelecciones.RecordCount
+end;
+
 function TdmDatos.getDirectorio: string;
 begin
   Result := zqConfiguracion.FieldByName('directorio').AsString;
@@ -155,6 +185,28 @@ begin
         zqConfiguracion.FieldByName('ext_raw').AsInteger;
     Open;
     Result := FieldByName('extension').AsString;
+    Close;
+  end;
+end;
+
+function TdmDatos.getParaBorrar: Integer;
+begin
+   with zqTotParaBorrar do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    Result := FieldByName('contador').AsInteger;
+    Close;
+  end;
+end;
+
+function TdmDatos.getSeleccionadas: Integer;
+begin
+  with zqTotSel do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    Result := FieldByName('contador').AsInteger;
     Close;
   end;
 end;
@@ -294,6 +346,13 @@ begin
     for i := 1 to 6 do
       SeleccionAlta('Cambio ' + IntToStr(i));
   end;
+  //desplegar selecciones
+  with zqSelecciones do
+  begin
+    Close;
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+  end;
 end;
 
 procedure TdmDatos.SeleccionAlta(Descripcion: string);
@@ -304,6 +363,32 @@ begin
     ParamByName('des').AsString := Descripcion;
     ExecSQL;
   end;
+end;
+
+procedure TdmDatos.AgregaCambio;
+var
+  SeleccionActual,
+  Total: Integer;
+begin
+  SeleccionActual := zqSelecciones.RecNo;
+  Total := Cambios;
+  zqSelecciones.Close;
+  SeleccionAlta('Cambio ' + IntToStr(Total + 1));
+  zqSelecciones.Open;
+  zqSelecciones.RecNo := SeleccionActual;
+end;
+
+procedure TdmDatos.BorraCambio;
+var
+  id: Integer;
+begin
+  id := zqSelecciones.FieldByName('id').AsInteger;
+  zqSelecciones.Close;
+  zqSeleccionBaja.ParamByName('id').AsInteger := id;
+  zqSeleccionBaja.ExecSQL;
+  zqDeselecciona.ParamByName('sel').AsInteger := id;
+  zqDeselecciona.ExecSQL;
+  zqSelecciones.Open;
 end;
 
 end.

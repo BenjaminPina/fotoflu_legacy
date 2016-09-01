@@ -225,7 +225,7 @@ object frmEstructura: TfrmEstructura
     ModalResult = 11
     TabOrder = 1
   end
-  object BitBtn2: TBitBtn
+  object btnAceptar: TBitBtn
     Left = 193
     Height = 30
     Top = 288
