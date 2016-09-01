@@ -87,6 +87,9 @@ type
     procedure setFotoActual(AValue: Integer);
     procedure setVentana(AValue: Integer);
     procedure ArchivoAlta(Archivo: string);
+    procedure CambiaSeleccionArchivo(Sel: Integer);
+    procedure RefrescaSelecciones;
+    procedure RefrescaArchivos;
   public
     { public declarations }
     procedure EliminaDestino(id: Integer);
@@ -97,6 +100,10 @@ type
     procedure BorraCambio;
     procedure SiguienteFoto;
     procedure AnteriorFoto;
+    procedure SeleccionaFoto;
+    procedure DeseleccionaFoto;
+    procedure BorraFoto;
+    procedure Refresca;
     property Directorio: string read getDirectorio write setDirectorio;
     property DirectorioID: Integer read FDirectorioID;
     property DestinoJPG: string read getDestinoJPG;
@@ -308,6 +315,22 @@ begin
   end;
 end;
 
+procedure TdmDatos.CambiaSeleccionArchivo(Sel: Integer);
+var
+  Actual: Integer;
+begin
+  with zqArchivos do
+  begin
+    Actual := RecNo;
+    Edit;
+    FieldByName('seleccion').AsInteger := Sel;
+    ApplyUpdates;
+    Refresh;
+    RecNo := Actual;
+  end;
+  RefrescaSelecciones;
+end;
+
 procedure TdmDatos.EliminaDestino(id: Integer);
 begin
   zqEliminaDestino.ParamByName('id').AsInteger := id;
@@ -421,6 +444,7 @@ end;
 
 procedure TdmDatos.BorraCambio;
 var
+  Actual,
   id: Integer;
 begin
   id := zqSelecciones.FieldByName('id').AsInteger;
@@ -430,6 +454,12 @@ begin
   zqDeselecciona.ParamByName('sel').AsInteger := id;
   zqDeselecciona.ExecSQL;
   zqSelecciones.Open;
+  with zqArchivos do
+  begin
+    Actual := RecNo;
+    Refresh;
+    RecNo := Actual;
+  end;
 end;
 
 procedure TdmDatos.SiguienteFoto;
@@ -453,6 +483,53 @@ begin
       Prior
     else
       Last;
+  end;
+end;
+
+procedure TdmDatos.SeleccionaFoto;
+begin
+  CambiaSeleccionArchivo(zqSelecciones.FieldByName('id').AsInteger);
+end;
+
+procedure TdmDatos.DeseleccionaFoto;
+begin
+  CambiaSeleccionArchivo(0);
+end;
+
+procedure TdmDatos.BorraFoto;
+begin
+  //marca foto para borrado
+  CambiaSeleccionArchivo(-1);
+end;
+
+procedure TdmDatos.Refresca;
+begin
+  RefrescaSelecciones;
+  RefrescaArchivos;
+end;
+
+procedure TdmDatos.RefrescaSelecciones;
+var
+  Actual: Integer;
+begin
+   //refrescar consulta de selecciones para actualizar estadísticas
+  with zqSelecciones do
+  begin
+    Actual := RecNo;
+    Refresh;
+    RecNo := Actual;
+  end;
+end;
+
+procedure TdmDatos.RefrescaArchivos;
+var
+  Actual: Integer;
+begin
+  with zqArchivos do
+  begin
+    Actual := RecNo;
+    Refresh;
+    RecNo := Actual;
   end;
 end;
 

@@ -54,6 +54,7 @@ type
     procedure btbDistribuirClick(Sender: TObject);
     procedure btbExplorarImagenesClick(Sender: TObject);
     procedure btbExportarSelectasClick(Sender: TObject);
+    procedure dbeCambioExit(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
@@ -61,13 +62,16 @@ type
     procedure imgImagenClick(Sender: TObject);
     procedure scbPosicionChange(Sender: TObject);
     procedure spbAgregaSeleccionClick(Sender: TObject);
+    procedure spbBorrarClick(Sender: TObject);
     procedure spbDerClick(Sender: TObject);
+    procedure spbDeseleccionarClick(Sender: TObject);
     procedure spbEliminaSeleccionClick(Sender: TObject);
     procedure spbNoRotarClick(Sender: TObject);
     procedure spbOpcionesClick(Sender: TObject);
     procedure spbIzqClick(Sender: TObject);
     procedure spbRotarAHClick(Sender: TObject);
     procedure spbRotarHClick(Sender: TObject);
+    procedure spbSeleccionarClick(Sender: TObject);
     procedure stvDirChange(Sender: TObject; Node: TTreeNode);
   private
     { private declarations }
@@ -76,7 +80,6 @@ type
     procedure IniciaSeleccion;
     procedure DespliegaFoto;
     procedure DespliegaEstadisticas;
-    procedure Marca(Cambio: Integer);
   public
     { public declarations }
   end;
@@ -138,10 +141,22 @@ begin
   dmDatos.AgregaCambio;
 end;
 
+procedure TfrmPrincipal.spbBorrarClick(Sender: TObject);
+begin
+  dmDatos.BorraFoto;
+  DespliegaEstadisticas;
+end;
+
 procedure TfrmPrincipal.spbDerClick(Sender: TObject);
 begin
   dmDatos.SiguienteFoto;
   DespliegaFoto;
+end;
+
+procedure TfrmPrincipal.spbDeseleccionarClick(Sender: TObject);
+begin
+  dmDatos.DeseleccionaFoto;
+  DespliegaEstadisticas;
 end;
 
 procedure TfrmPrincipal.spbEliminaSeleccionClick(Sender: TObject);
@@ -181,7 +196,6 @@ begin
   begin
     RotateBitmap90(imgImagen.Picture.Bitmap);
     spbRotarAH.Down := True;
-   // spbRotarH.Down := False;
   end;
 end;
 
@@ -194,8 +208,13 @@ begin
   begin
     RotateBitmap180(imgImagen.Picture.Bitmap);
     spbRotarH.Down := True;
-    //spbRotarAH.Down := False;
   end;
+end;
+
+procedure TfrmPrincipal.spbSeleccionarClick(Sender: TObject);
+begin
+  dmDatos.SeleccionaFoto;
+  DespliegaEstadisticas;
 end;
 
 procedure TfrmPrincipal.stvDirChange(Sender: TObject; Node: TTreeNode);
@@ -276,19 +295,6 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.Marca(Cambio: Integer);
-begin
- { if Selectas[Pos - 1] = -1 then //¿estaba marcada para borrado?
-    Selectas[Pos - 1] := 0;
-  if Selectas[Pos - 1] <> 0 then //¿ya estaba seleccionada?
-    Dec(Contadores[Selectas[Pos - 1]]);
-  Selectas[Pos - 1] := Cambio;
-  if Cambio > 0 then
-    Inc(Contadores[Cambio]);
-  sttSel.Caption := IntToStr(Cambio);
-  DespliegaEstadisticas;}
-end;
-
 procedure TfrmPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction
   );
 begin
@@ -298,17 +304,20 @@ end;
 procedure TfrmPrincipal.FormKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  {
+  if not dmDatos.zqArchivos.Active then
+    Exit;
+  if stvDir.Focused or dbeCambio.Focused or dbgSelecciones.Focused then
+    Exit; //-->
   case Key of
     VK_RIGHT, VK_SPACE: spbDerClick(Self);
     VK_LEFT: spbIzqClick(Self);
     VK_UP: spbRotarAHClick(Self);
     VK_DOWN: spbRotarHClick(Self);
     VK_SHIFT: spbNoRotarClick(Self);
-    VK_DELETE, 110: Marca(-1); //110 = punto de teclado numérico (Supr)
-    96..105: Marca(Key - 96); //0..9 teclado numérico
-    48..57: Marca(Key - 48); //0..9 teclado qwerty
-  end; }
+    VK_DELETE, 110: spbBorrarClick(Self); //punto de teclado numérico (Supr)
+    96, 48: spbDeseleccionarClick(Self); //0 teclado numérico, 0 teclado qwerty
+    97, 49: spbSeleccionarClick(Self); //1 teclado numérico, 1 teclado qwerty
+  end;
 end;
 
 procedure TfrmPrincipal.btbCrearEstructuraClick(Sender: TObject);
@@ -483,6 +492,11 @@ begin
     btbExplorarImagenesClick(Self)
   else
     Close;  }
+end;
+
+procedure TfrmPrincipal.dbeCambioExit(Sender: TObject);
+begin
+  dmDatos.Refresca;
 end;
 
 end.
