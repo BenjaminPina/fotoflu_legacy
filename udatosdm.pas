@@ -5,7 +5,8 @@ unit udatosdm;
 interface
 
 uses
-  Classes, SysUtils, sqlite3conn, sqldb, db, LazFileUtils, ZConnection, ZDataset;
+  Classes, SysUtils, sqlite3conn, sqldb, db, LazFileUtils, ZConnection,
+  ZDataset, ZSqlProcessor;
 
 type
 
@@ -53,7 +54,12 @@ type
     zqSeleccionBaja: TZQuery;
     zqDeselecciona: TZQuery;
     zqArchivos: TZQuery;
+    zqSelectos: TZQuery;
+    zqPorBorrar: TZQuery;
+    zqEliminaBorrados: TZQuery;
+    zqDirectorios: TZQuery;
     zqUltId: TZQuery;
+    zspDepuraDirectorio: TZSQLProcessor;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure zqArchivosnombre1GetText(Sender: TField; var aText: string;
@@ -70,8 +76,10 @@ type
     FDirectorioID: Integer;
     FVersion: string;
     { private declarations }
+    FotoAntesFiltro: Integer;
     function getCambios: Integer;
     function getDestinoRaw: string;
+    function getDestinoSelectas: string;
     function getDestinoxID(id: Integer): string;
     function getDestinoJPG: string;
     function getDirectorio: string;
@@ -92,6 +100,10 @@ type
     procedure RefrescaArchivos;
   public
     { public declarations }
+    function RawsSeleccionados: TStringList;
+    function RawsSeleccionadosDestino: TStringList;
+    function JPGsPorBorrar: TStringList;
+    function RawsPorBorrar: TStringList;
     procedure EliminaDestino(id: Integer);
     procedure DirectorioAlta;
     procedure IniciaSeleccion(JPGs, Raws: TStringList);
@@ -104,10 +116,15 @@ type
     procedure DeseleccionaFoto;
     procedure BorraFoto;
     procedure Refresca;
+    procedure ActivaFiltro;
+    procedure DesactivaFiltro;
+    procedure EliminaBorrados;
+    procedure DepuraDirectorios;
     property Directorio: string read getDirectorio write setDirectorio;
     property DirectorioID: Integer read FDirectorioID;
     property DestinoJPG: string read getDestinoJPG;
     property DestinoRaw: string read getDestinoRaw;
+    property DestinoSelectas: string read getDestinoSelectas;
     property Version: string read FVersion;
     property Ventana: Integer read getVentana write setVentana;
     property ExtRaw: string read getExtRaw;
@@ -129,7 +146,7 @@ implementation
 
 procedure TdmDatos.DataModuleCreate(Sender: TObject);
 begin
-  FVersion := '1.9';
+  FVersion := '2.0 rc1';
   zcDatos.Connect;
   zqConfiguracion.Open;
   zqDestinos.Open;
@@ -192,6 +209,11 @@ end;
 function TdmDatos.getDestinoRaw: string;
 begin
   Result := getDestinoxID(zqConfiguracion.FieldByName('dest_raw').AsInteger);
+end;
+
+function TdmDatos.getDestinoSelectas: string;
+begin
+  Result := getDestinoxID(zqConfiguracion.FieldByName('dest_selectas').AsInteger);
 end;
 
 function TdmDatos.getCambios: Integer;
@@ -355,7 +377,6 @@ begin
   with zqDirectorioAlta do
   begin
     ParamByName('dir').AsString := Directorio;
-    ParamByName('hoy').AsFloat := Now;
     ExecSQL;
   end;
   //recuperar el ID del directorio insertado
@@ -508,6 +529,86 @@ begin
   RefrescaArchivos;
 end;
 
+procedure TdmDatos.ActivaFiltro;
+begin
+  with zqArchivos do
+  begin
+    FotoAntesFiltro := RecNo;
+    Close;
+    SQL.Text :=
+      ' SELECT ' +
+      '   a.id, a.nombre, a.seleccion, s.descripcion cambio ' +
+      ' FROM ' +
+      '   archivos a ' +
+      ' JOIN selecciones s ' +
+      ' ON (s.id = a.seleccion) ' +
+      ' WHERE ' +
+      ' a.seleccion = :sel ' +
+      ' ORDER BY ' +
+      ' a.nombre ';
+    ParamByName('sel').AsInteger := zqSelecciones.FieldByName('id').AsInteger;
+    Open;
+  end;
+  RefrescaArchivos;
+end;
+
+procedure TdmDatos.DesactivaFiltro;
+begin
+  with zqArchivos do
+  begin
+    Close;
+    SQL.Text := 'SELECT ' +
+       '  id, ' +
+       '  nombre, ' +
+       '  seleccion, ' +
+       '  CASE seleccion ' +
+       '    WHEN 0 THEN ''No seleccionada'' ' +
+       '    WHEN -1 THEN ''Para borrar'' ' +
+       '  ELSE ' +
+       '    (SELECT descripcion FROM selecciones WHERE id = seleccion LIMIT 1) ' +
+       '  END cambio ' +
+       'FROM ' +
+       '  archivos ' +
+       'WHERE ' +
+       '  directorio =  :dir ' +
+       'ORDER BY ' +
+       '  nombre ' ;
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    RefrescaArchivos;
+    RecNo := FotoAntesFiltro;
+  end;
+end;
+
+procedure TdmDatos.EliminaBorrados;
+begin
+  with zqEliminaBorrados do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    ExecSQL;
+  end;
+end;
+
+procedure TdmDatos.DepuraDirectorios;
+begin
+  with dmDatos.zqDirectorios do
+  begin
+    Open;
+    First;
+    while not EOF do
+    begin
+      if not DirectoryExists(FieldByName('ruta').AsString) then
+      begin
+        zspDepuraDirectorio.ParamByName('id').AsInteger
+            := FieldByName('id').AsInteger;
+        zspDepuraDirectorio.Execute;
+      end;
+      Next;
+    end;
+    Close;
+  end;
+end;
+
 procedure TdmDatos.RefrescaSelecciones;
 var
   Actual: Integer;
@@ -530,6 +631,89 @@ begin
     Actual := RecNo;
     Refresh;
     RecNo := Actual;
+  end;
+end;
+
+function TdmDatos.RawsSeleccionados: TStringList;
+var
+  Raw,
+  RutaOrigen: string;
+begin
+  Result := TStringList.Create;
+  RutaOrigen :=getDestinoxID(zqConfiguracion.FieldByName('dest_raw').AsInteger);
+  with zqSelectos do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    First;
+    while not EOF do
+    begin
+      Raw := ExtractFileNameOnly(FieldByName('nombre').AsString) + '.' + ExtRaw;
+      Result.Add(RutaOrigen + Raw);
+      Next;
+    end;
+    Close;
+  end;
+end;
+
+function TdmDatos.RawsSeleccionadosDestino: TStringList;
+var
+  Raw,
+  RutaDestino: string;
+begin
+  Result := TStringList.Create;
+  RutaDestino := getDestinoxID(zqConfiguracion.FieldByName('dest_selectas').AsInteger);
+  with zqSelectos do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    First;
+    while not EOF do
+    begin
+      Raw := ExtractFileNameOnly(FieldByName('nombre').AsString) + '.' + ExtRaw;
+      Result.Add(RutaDestino + Raw);
+      Next;
+    end;
+    Close;
+  end;
+end;
+
+function TdmDatos.JPGsPorBorrar: TStringList;
+begin
+  Result := TStringList.Create;
+  with zqPorBorrar do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    First;
+    while not EOF do
+    begin
+      Result.Add(FieldByName('nombre').AsString);
+      Next;
+    end;
+    Close;
+  end;
+end;
+
+function TdmDatos.RawsPorBorrar: TStringList;
+var
+  Raw,
+  Ruta: string;
+begin
+  Result := TStringList.Create;
+  Ruta := getDestinoxID(zqConfiguracion.FieldByName('dest_raw').AsInteger);
+  with zqPorBorrar do
+  begin
+    ParamByName('dir').AsInteger := FDirectorioID;
+    Open;
+    First;
+    while not EOF do
+    begin
+      Raw := ExtractFileNameOnly(FieldByName('nombre').AsString) + '.' + ExtRaw;
+      Result.Add(Ruta + Raw);
+      Next;
+    end;
+    Close;
   end;
 end;
 

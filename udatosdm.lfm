@@ -5,10 +5,10 @@ object dmDatos: TdmDatos
   Height = 409
   HorizontalOffset = 324
   VerticalOffset = 216
-  Width = 847
+  Width = 885
   object dsExtensiones: TDataSource
     DataSet = zqExtensiones
-    left = 173
+    left = 152
     top = 152
   end
   object dsConfiguracion: TDataSource
@@ -18,7 +18,7 @@ object dmDatos: TdmDatos
   end
   object dsDestinos: TDataSource
     DataSet = zqDestinos
-    left = 272
+    left = 248
     top = 152
   end
   object zcDatos: TZConnection
@@ -62,7 +62,7 @@ object dmDatos: TdmDatos
       '  indice'
     )
     Params = <>
-    left = 173
+    left = 152
     top = 88
     object zqExtensionesindice1: TLongintField
       FieldKind = fkData
@@ -110,7 +110,7 @@ object dmDatos: TdmDatos
       '  id'
     )
     Params = <>
-    left = 272
+    left = 248
     top = 88
     object zqDestinosid1: TLongintField
       FieldKind = fkData
@@ -191,32 +191,22 @@ object dmDatos: TdmDatos
     SQL.Strings = (
       'INSERT INTO'
       '  directorios '
-      '  (ruta, fecha)'
+      '  (ruta)'
       'VALUES'
-      '  (:dir, :hoy)'
+      '  (:dir)'
     )
     Params = <    
       item
         DataType = ftUnknown
         Name = 'dir'
         ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'hoy'
-        ParamType = ptUnknown
       end>
-    left = 173
+    left = 152
     top = 279
     ParamData = <    
       item
         DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'hoy'
         ParamType = ptUnknown
       end>
   end
@@ -236,7 +226,7 @@ object dmDatos: TdmDatos
         Name = 'id'
         ParamType = ptUnknown
       end>
-    left = 173
+    left = 152
     top = 216
     ParamData = <    
       item
@@ -261,7 +251,7 @@ object dmDatos: TdmDatos
         Name = 'id'
         ParamType = ptUnknown
       end>
-    left = 272
+    left = 248
     top = 216
     ParamData = <    
       item
@@ -277,7 +267,7 @@ object dmDatos: TdmDatos
       '  last_insert_rowid() AS id'
     )
     Params = <>
-    left = 800
+    left = 840
     top = 216
   end
   object zqArchivoAlta: TZQuery
@@ -300,8 +290,8 @@ object dmDatos: TdmDatos
         Name = 'arc'
         ParamType = ptUnknown
       end>
-    left = 272
-    top = 279
+    left = 248
+    top = 280
     ParamData = <    
       item
         DataType = ftUnknown
@@ -332,7 +322,7 @@ object dmDatos: TdmDatos
         Name = 'arc'
         ParamType = ptUnknown
       end>
-    left = 352
+    left = 344
     top = 216
     ParamData = <    
       item
@@ -359,7 +349,7 @@ object dmDatos: TdmDatos
         Name = 'dir'
         ParamType = ptUnknown
       end>
-    left = 448
+    left = 440
     top = 216
     ParamData = <    
       item
@@ -388,7 +378,7 @@ object dmDatos: TdmDatos
         Name = 'des'
         ParamType = ptUnknown
       end>
-    left = 352
+    left = 344
     top = 279
     ParamData = <    
       item
@@ -425,7 +415,7 @@ object dmDatos: TdmDatos
         Name = 'dir'
         ParamType = ptUnknown
       end>
-    left = 352
+    left = 344
     top = 88
     ParamData = <    
       item
@@ -470,7 +460,7 @@ object dmDatos: TdmDatos
   end
   object dsSelecciones: TDataSource
     DataSet = zqSelecciones
-    left = 352
+    left = 344
     top = 152
   end
   object zqTotSel: TZQuery
@@ -490,7 +480,7 @@ object dmDatos: TdmDatos
         Name = 'dir'
         ParamType = ptUnknown
       end>
-    left = 552
+    left = 536
     top = 216
     ParamData = <    
       item
@@ -539,7 +529,7 @@ object dmDatos: TdmDatos
         Name = 'id'
         ParamType = ptUnknown
       end>
-    left = 448
+    left = 440
     top = 279
     ParamData = <    
       item
@@ -564,7 +554,7 @@ object dmDatos: TdmDatos
         Name = 'sel'
         ParamType = ptUnknown
       end>
-    left = 552
+    left = 536
     top = 279
     ParamData = <    
       item
@@ -599,7 +589,7 @@ object dmDatos: TdmDatos
         Name = 'dir'
         ParamType = ptUnknown
       end>
-    left = 448
+    left = 440
     top = 88
     ParamData = <    
       item
@@ -649,7 +639,126 @@ object dmDatos: TdmDatos
   end
   object dsArchivos: TDataSource
     DataSet = zqArchivos
-    left = 448
+    left = 440
     top = 152
+  end
+  object zqSelectos: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  nombre'
+      'FROM'
+      '  archivos'
+      'WHERE'
+      '  seleccion > 0'
+      '  AND directorio = :dir'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 712
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqPorBorrar: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  nombre'
+      'FROM'
+      '  archivos'
+      'WHERE'
+      '  seleccion = -1'
+      '  AND directorio = :dir'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 776
+    top = 216
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zqEliminaBorrados: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'DELETE FROM'
+      '  archivos'
+      'WHERE'
+      '  seleccion = -1'
+      '  AND directorio = :dir'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+    left = 640
+    top = 279
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'dir'
+        ParamType = ptUnknown
+      end>
+  end
+  object zspDepuraDirectorio: TZSQLProcessor
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'id'
+        ParamType = ptUnknown
+      end>
+    Script.Strings = (
+      '-- Elminar todas las selecciones asociadas'
+      'DELETE FROM'
+      '  selecciones'
+      'WHERE'
+      '  directorio = :id;'
+      ''
+      '--Eliminar todos los archivos asociados'
+      'DELETE FROM'
+      '  archivos'
+      'WHERE'
+      '  directorio = :id;'
+      ''
+      '--Eliminar el directorio'
+      'DELETE FROM'
+      '  directorios'
+      'WHERE'
+      '  id = :id;'
+    )
+    Connection = zcDatos
+    Delimiter = ';'
+    left = 48
+    top = 344
+  end
+  object zqDirectorios: TZQuery
+    Connection = zcDatos
+    SQL.Strings = (
+      'SELECT'
+      '  id, ruta'
+      'FROM'
+      '  directorios'
+    )
+    Params = <>
+    left = 536
+    top = 88
   end
 end

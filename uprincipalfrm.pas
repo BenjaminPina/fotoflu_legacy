@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Buttons, ShellCtrls, ValEdit, DefaultTranslator,
+  ExtCtrls, Buttons, ShellCtrls, DefaultTranslator,
   DBGrids, udatosdm, ComCtrls, DbCtrls;
 
 type
@@ -66,6 +66,7 @@ type
     procedure spbDerClick(Sender: TObject);
     procedure spbDeseleccionarClick(Sender: TObject);
     procedure spbEliminaSeleccionClick(Sender: TObject);
+    procedure spbFiltrarClick(Sender: TObject);
     procedure spbNoRotarClick(Sender: TObject);
     procedure spbOpcionesClick(Sender: TObject);
     procedure spbIzqClick(Sender: TObject);
@@ -80,6 +81,7 @@ type
     procedure IniciaSeleccion;
     procedure DespliegaFoto;
     procedure DespliegaEstadisticas;
+    procedure DepuraDirectorios;
   public
     { public declarations }
   end;
@@ -112,6 +114,8 @@ begin
     WindowState := wsMaximized
   else
     WindowState := wsNormal;
+  btbExportarSelectas.Enabled := False;
+  DepuraDirectorios;
 end;
 
 procedure TfrmPrincipal.FormWindowStateChange(Sender: TObject);
@@ -167,6 +171,47 @@ begin
   if MessageDlg('¿Estás seguro de elminar el cambio "' + Cambio + '"?',
       mtConfirmation, mbYesNo, 0) = mrYes then
     dmDatos.BorraCambio;
+end;
+
+procedure TfrmPrincipal.spbFiltrarClick(Sender: TObject);
+var
+  Seleccionadas: Integer;
+  Cambio: string;
+begin
+  //¿ya está activo el filtro?
+  if sttFiltro.Visible then
+  begin
+    dmDatos.DesactivaFiltro;
+    IniciaSeleccion;
+    sttFiltro.Visible := False;
+    dbgSelecciones.Enabled := True;
+    spbSeleccionar.Enabled := True;
+    spbDeseleccionar.Enabled := True;
+    spbBorrar.Enabled := True;
+    spbAgregaSeleccion.Enabled := True;
+    spbEliminaSeleccion.Enabled := True;
+  end
+  else
+  begin
+    Seleccionadas := dmDatos.zqSelecciones.FieldByName('seleccionadas').AsInteger;
+    Cambio := dmDatos.zqSelecciones.FieldByName('descripcion').AsString;
+    if Seleccionadas = 0 then
+    begin
+      MessageDlg('No hay imágenes seleccionadas para el cambio "' + Cambio + '"',
+          mtWarning, [mbOK], 0);
+      Exit;
+    end;
+    dmDatos.ActivaFiltro;
+    IniciaSeleccion;
+    sttFiltro.Caption := 'FILTRO: ' + dbtSel.Caption;
+    sttFiltro.Visible := True;
+    dbgSelecciones.Enabled := False;
+    spbSeleccionar.Enabled := False;
+    spbDeseleccionar.Enabled := False;
+    spbBorrar.Enabled := False;
+    spbAgregaSeleccion.Enabled := False;
+    spbEliminaSeleccion.Enabled := False;
+  end;
 end;
 
 procedure TfrmPrincipal.spbNoRotarClick(Sender: TObject);
@@ -295,6 +340,42 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.DepuraDirectorios;
+var
+  Bandera: Boolean;
+  Borrados: string;
+begin
+  //verifica si los directorios registrados en base de datos aún existen en el
+  //sistema de archivos.
+  Borrados := '';
+  Bandera := False;
+  with dmDatos.zqDirectorios do
+  begin
+    Open;
+    First;
+    while not EOF do
+    begin
+      if not DirectoryExists(FieldByName('ruta').AsString) then
+      begin
+        Bandera := True;
+        Borrados := Borrados + FieldByName('ruta').AsString + '; ';
+      end;
+      Next;
+    end;
+    Close;
+  end;
+  if Bandera then
+    if MessageDlg('Existen directorios registrados en la base de datos'
+        + ' que ya no'
+        + ' existen en el sistema de archivos.'
+        + ' ¿Desea elminarlos de la base de datos?' + #13#10
+        + Borrados, mtWarning, mbYesNo, 0) = mrYes then
+    begin
+      dmDatos.DepuraDirectorios;
+      MessageDlg('Los directorios fueron depurados.', mtInformation, [mbOK], 0);
+    end;
+end;
+
 procedure TfrmPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction
   );
 begin
@@ -386,6 +467,7 @@ var
   Raws: TStringList;
   //Seleccionables contiene todos los JPG's que tienen su correspondiente raw
 begin
+  btbExportarSelectas.Enabled := False;
   //obtener listas de archivos
   DirJPG := dmDatos.DestinoJPG;
   DirRaw := dmDatos.DestinoRaw;
@@ -399,6 +481,7 @@ begin
     MessageDlg('No existe el directorio de Raw.', mtError, [mbOK], 0);
     Exit; //-->
   end;
+  Screen.Cursor := crSQLWait;
   dmDatos.DirectorioAlta;
   JPGs := TStringList.Create;
   Raws := TStringList.Create;
@@ -410,6 +493,7 @@ begin
     MessageDlg('No se encontraron achivos JPG para explorar.', mtError, [mbOK], 0);
     JPGs.Free;
     Raws.Free;
+    Screen.Cursor := crDefault;
     Exit; //-->
   end;
   //verificar paridad JPG/RAW
@@ -418,59 +502,57 @@ begin
     MessageDlg('No coinciden las cantidades de archivos JPG y archivos Raw.' + #13#10
         + 'Las imágenes sin archivo Raw no serán desplegadas.', mtWarning, [mbOK], 0);
   end;
+  //verificar al menos un Raw
+  if Raws.Count = 0 then
+  begin
+    MessageDlg('No se encontraron achivos raw seleccionables.', mtError, [mbOK], 0);
+    JPGs.Free;
+    Raws.Free;
+    Screen.Cursor := crDefault;
+    Exit; //-->
+  end;
   //iniciar revisión de archivos
   dmDatos.IniciaSeleccion(JPGs, Raws);
   IniciaSeleccion;
   JPGs.Free;
   Raws.Free;
+  btbExportarSelectas.Enabled := True;
+  Screen.Cursor := crDefault;
 end;
 
 procedure TfrmPrincipal.btbExportarSelectasClick(Sender: TObject);
-{var
-  ContBorr,
+var
   i: Integer;
-  ListaPorBorrar: TStringList;
-  DirDest: string; }
+  Origenes,
+  Destinos,
+  JPGsPorBorrar,
+  RawsPorBorrar: TStringList;
 begin
-  {ContBorr := 0;
-  ListaPorBorrar := TStringList.Create;
-  Origenes.Clear;
-  Destinos.Clear;
-  for i := 0 to JPGs.Count - 1 do
+  if not DirectoryExists(dmDatos.DestinoSelectas) then
   begin
-    if Selectas[i] > 0 then
-      Origenes.Add(Raws.Strings[i])
-    else
-    begin
-      if Selectas[i] = - 1 then
-      begin
-        Inc(ContBorr);
-        ListaPorBorrar.Add(JPGs.Strings[i]);
-        ListaPorBorrar.Add(Raws.Strings[i]);
-      end;
-    end;
-  end;
-//  DirDest := stvDir.Path + DirectorySeparator + frmOpciones.cmbDSelectas.Text + DirectorySeparator;
-  if not DirectoryExists(DirDest) then
-  begin
-   MessageDlg('No existe el directorio SELECTOS.', mtError, [mbOK], 0);
-   ListaPorBorrar.Free;
+   MessageDlg('No existe el directorio SELECTAS.', mtError, [mbOK], 0);
    Exit; //-->
   end;
-
-  //llenar lista de archivos destino
-  for i := 0 to Origenes.Count - 1 do
-    Destinos.Add(DirDest + ExtractFileName(Origenes.Strings[i]));
+  Origenes := dmDatos.RawsSeleccionados;
+  Destinos := dmDatos.RawsSeleccionadosDestino;
+  JPGsPorBorrar := dmDatos.JPGsPorBorrar;
+  RawsPorBorrar := dmDatos.RawsPorBorrar;
 
   //si se marcaron archivos para borrar pedir confirmación
-  if ContBorr > 0 then
+  i := dmDatos.ParaBorrar;
+  if i > 0 then
   begin
    if MessageDlg('¿Borrar archivos?'
-       , 'Se marcaron ' + IntToStr(ContBorr) + ' archivos para ser borrados.'
-       + '¿Confirma que desea eliminarlos?', mtConfirmation, mbYesNo, 0) = mrYes then
+       , 'Se marcaron ' + IntToStr(i) + ' archivos para ser borrados.'
+       + '¿Confirma que desea eliminarlos?',
+       mtConfirmation, mbYesNo, 0) = mrYes then
    begin
-     for i := 0 to ListaPorBorrar.Count - 1 do
-       DeleteFile(ListaPorBorrar.Strings[i]);
+     for i := 0 to JPGsPorBorrar.Count - 1 do
+       DeleteFile(JPGsPorBorrar.Strings[i]);
+     for i := 0 to RawsPorBorrar.Count - 1 do
+       DeleteFile(RawsPorBorrar.Strings[i]);
+     //eliminar archivos borrados de la tabla
+     dmDatos.EliminaBorrados;
      MessageDlg('Los archivos marcados fueron eliminados.', mtInformation, [mbOK], 0);
    end;
   end;
@@ -483,15 +565,17 @@ begin
   frmCopiar.ShowModal;
   frmCopiar.Free;
 
-  ListaPorBorrar.Free;
-  bExportados := True;
+  Origenes.Free;
+  Destinos.Free;
+  JPGsPorBorrar.Free;
+  RawsPorBorrar.Free;
 
   if MessageDlg('FotoFlu', 'Se exportaron los archivos selectos.'
-      + '"Aceptar" parsa continuar en FotoFlu; "Cerrar" para salir'
+      + '"Aceptar" para continuar en FotoFlu o "Cerrar" para salir.'
       , mtConfirmation, [mbOK, mbClose], 0) = mrOK then
     btbExplorarImagenesClick(Self)
   else
-    Close;  }
+    Close;
 end;
 
 procedure TfrmPrincipal.dbeCambioExit(Sender: TObject);

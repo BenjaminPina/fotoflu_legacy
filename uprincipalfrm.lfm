@@ -808,6 +808,7 @@ object frmPrincipal: TfrmPrincipal
       Anchors = [akLeft, akBottom]
       AutoSize = True
       Caption = 'Filtro: sin filtro'
+      Font.Color = clMaroon
       Font.Height = -13
       Font.Name = '@Arial Unicode MS'
       Font.Style = [fsBold]
@@ -1044,6 +1045,7 @@ object frmPrincipal: TfrmPrincipal
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
+      OnClick = spbFiltrarClick
     end
     object dbeCambio: TDBEdit
       Left = 8
