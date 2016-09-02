@@ -1,3 +1,16 @@
+{******************************************************************************
+FotoFlu
+
+Sistema para control de flujo de trabajo fotográfico.
+
+Autor: Benjamín Piña Altamirano
+Mail: benjamin.pina@gmail.com
+
+Agosto 2016
+
+Licencia GNU GPL
+*******************************************************************************}
+
 program FotoFlu;
 
 {$mode objfpc}{$H+}
