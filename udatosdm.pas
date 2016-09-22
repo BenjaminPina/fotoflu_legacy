@@ -146,7 +146,7 @@ implementation
 
 procedure TdmDatos.DataModuleCreate(Sender: TObject);
 begin
-  FVersion := '2.0 rc1';
+  FVersion := '2.0 rc2';
   zcDatos.Connect;
   zqConfiguracion.Open;
   zqDestinos.Open;
@@ -617,6 +617,7 @@ begin
   with zqSelecciones do
   begin
     Actual := RecNo;
+    ApplyUpdates;
     Refresh;
     RecNo := Actual;
   end;
@@ -629,6 +630,7 @@ begin
   with zqArchivos do
   begin
     Actual := RecNo;
+    ApplyUpdates;
     Refresh;
     RecNo := Actual;
   end;

@@ -110,11 +110,6 @@
       <TargetCPU Value="x86_64"/>
       <TargetOS Value="win64"/>
     </CodeGeneration>
-    <Linking>
-      <Debugging>
-        <GenerateDebugInfo Value="False"/>
-      </Debugging>
-    </Linking>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
