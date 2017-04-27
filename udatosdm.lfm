@@ -28,7 +28,6 @@ object dmDatos: TdmDatos
       'AutoEncodeStrings='
     )
     Port = 0
-    Database = 'C:\Benjamin\Lazarus\FotoFlu_2.0\fotoflu.sqlite3'
     Protocol = 'sqlite-3'
     left = 48
     top = 24

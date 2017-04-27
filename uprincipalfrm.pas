@@ -56,6 +56,7 @@ type
     procedure btbExportarSelectasClick(Sender: TObject);
     procedure dbeCambioExit(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
@@ -380,6 +381,11 @@ procedure TfrmPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction
   );
 begin
   frmOpciones.Free;
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  TdmDatos.RutaEjecutable := ExtractFilePath(Application.ExeName);
 end;
 
 procedure TfrmPrincipal.FormKeyUp(Sender: TObject; var Key: Word;

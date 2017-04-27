@@ -100,6 +100,7 @@ type
     procedure RefrescaArchivos;
   public
     { public declarations }
+    RutaEjecutable: string; static;
     function RawsSeleccionados: TStringList;
     function RawsSeleccionadosDestino: TStringList;
     function JPGsPorBorrar: TStringList;
@@ -146,7 +147,9 @@ implementation
 
 procedure TdmDatos.DataModuleCreate(Sender: TObject);
 begin
-  FVersion := '2.0 rc2';
+  FVersion := '2.2';
+  zcDatos.LibraryLocation := RutaEjecutable + 'sqlite3.dll';
+  zcDatos.Database := RutaEjecutable + 'fotoflu.sqlite3';
   zcDatos.Connect;
   zqConfiguracion.Open;
   zqDestinos.Open;

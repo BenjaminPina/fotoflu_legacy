@@ -8,12 +8,13 @@ object frmPrincipal: TfrmPrincipal
   ClientWidth = 1084
   KeyPreview = True
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyUp = FormKeyUp
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
   Position = poDefault
   ShowHint = True
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '1.6.4.0'
   object BitBtn1: TBitBtn
     Left = 995
     Height = 30
