@@ -144,6 +144,7 @@ end;
 procedure TfrmPrincipal.spbAgregaSeleccionClick(Sender: TObject);
 begin
   dmDatos.AgregaCambio;
+  DespliegaEstadisticas;
 end;
 
 procedure TfrmPrincipal.spbBorrarClick(Sender: TObject);
@@ -172,6 +173,7 @@ begin
   if MessageDlg('¿Estás seguro de elminar el cambio "' + Cambio + '"?',
       mtConfirmation, mbYesNo, 0) = mrYes then
     dmDatos.BorraCambio;
+  DespliegaEstadisticas;
 end;
 
 procedure TfrmPrincipal.spbFiltrarClick(Sender: TObject);
@@ -587,6 +589,7 @@ end;
 procedure TfrmPrincipal.dbeCambioExit(Sender: TObject);
 begin
   dmDatos.Refresca;
+  DespliegaEstadisticas;
 end;
 
 end.

@@ -4,15 +4,14 @@
     <PathDelim Value="\"/>
     <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="12">
+    <Units Count="13">
       <Unit0>
         <Filename Value="FotoFlu.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="27" Y="24"/>
         <UsageCount Value="228"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="uprincipalfrm.pas"/>
@@ -21,12 +20,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPrincipalFrm"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="386"/>
-        <CursorPos X="30" Y="388"/>
+        <TopLine Value="578"/>
+        <CursorPos X="33" Y="585"/>
         <UsageCount Value="228"/>
         <Bookmarks Count="1">
-          <Item0 X="4" Y="325" ID="2"/>
+          <Item0 X="4" Y="306" ID="2"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -74,14 +72,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="144"/>
-        <CursorPos X="59" Y="151"/>
-        <UsageCount Value="176"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="135"/>
+        <CursorPos X="3" Y="224"/>
+        <UsageCount Value="179"/>
         <Bookmarks Count="1">
-          <Item0 X="15" Y="486" ID="1"/>
+          <Item0 X="5" Y="481" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
@@ -128,35 +126,43 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit11>
+      <Unit12>
+        <Filename Value="..\ZEOSDBO-7.1.4-stable\src\dbc\ZDbcSqLiteUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="259"/>
+        <CursorPos X="26" Y="266"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
     </Units>
     <JumpHistory Count="7" HistoryIndex="6">
       <Position1>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="190" Column="45" TopLine="185"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="455" Column="3" TopLine="493"/>
       </Position1>
       <Position2>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="149" Column="3" TopLine="147"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="590" Column="25" TopLine="575"/>
       </Position2>
       <Position3>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="158" Column="3" TopLine="141"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="336" Column="3" TopLine="331"/>
       </Position3>
       <Position4>
         <Filename Value="udatosdm.pas"/>
-        <Caret Line="150" Column="78" TopLine="147"/>
+        <Caret Line="132" Column="14" TopLine="125"/>
       </Position4>
       <Position5>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="105" TopLine="105"/>
+        <Caret Line="336" Column="3" TopLine="331"/>
       </Position5>
       <Position6>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="136" Column="38" TopLine="141"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="147" Column="25" TopLine="144"/>
       </Position6>
       <Position7>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="103" Column="38" TopLine="95"/>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="176" Column="25" TopLine="168"/>
       </Position7>
     </JumpHistory>
   </ProjectSession>
