@@ -73,13 +73,14 @@
         <ResourceBaseClass Value="DataModule"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="135"/>
-        <CursorPos X="3" Y="224"/>
+        <TopLine Value="148"/>
+        <CursorPos X="5" Y="153"/>
         <UsageCount Value="179"/>
         <Bookmarks Count="1">
-          <Item0 X="5" Y="481" ID="1"/>
+          <Item0 X="5" Y="483" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
@@ -138,31 +139,31 @@
     <JumpHistory Count="7" HistoryIndex="6">
       <Position1>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="455" Column="3" TopLine="493"/>
+        <Caret Line="590" Column="25" TopLine="575"/>
       </Position1>
       <Position2>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="590" Column="25" TopLine="575"/>
+        <Caret Line="336" Column="3" TopLine="331"/>
       </Position2>
       <Position3>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="336" Column="3" TopLine="331"/>
-      </Position3>
-      <Position4>
         <Filename Value="udatosdm.pas"/>
         <Caret Line="132" Column="14" TopLine="125"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="336" Column="3" TopLine="331"/>
       </Position4>
       <Position5>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="336" Column="3" TopLine="331"/>
+        <Caret Line="147" Column="25" TopLine="144"/>
       </Position5>
       <Position6>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="147" Column="25" TopLine="144"/>
+        <Caret Line="176" Column="25" TopLine="168"/>
       </Position6>
       <Position7>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="176" Column="25" TopLine="168"/>
+        <Filename Value="udatosdm.pas"/>
+        <Caret Line="224" Column="3" TopLine="135"/>
       </Position7>
     </JumpHistory>
   </ProjectSession>
