@@ -20,8 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPrincipalFrm"/>
-        <TopLine Value="578"/>
-        <CursorPos X="33" Y="585"/>
+        <TopLine Value="477"/>
+        <CursorPos X="3" Y="539"/>
         <UsageCount Value="228"/>
         <Bookmarks Count="1">
           <Item0 X="4" Y="306" ID="2"/>
@@ -60,10 +60,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCopiar"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="46"/>
-        <CursorPos X="40" Y="18"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="42"/>
+        <CursorPos Y="60"/>
         <UsageCount Value="208"/>
+        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="udatosdm.pas"/>
@@ -71,10 +73,9 @@
         <ComponentName Value="dmDatos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="148"/>
-        <CursorPos X="21" Y="150"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="145"/>
+        <CursorPos X="44" Y="159"/>
         <UsageCount Value="179"/>
         <Bookmarks Count="1">
           <Item0 X="5" Y="483" ID="1"/>
@@ -136,7 +137,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
     </Units>
-    <JumpHistory Count="7" HistoryIndex="6">
+    <JumpHistory Count="14" HistoryIndex="13">
       <Position1>
         <Filename Value="uprincipalfrm.pas"/>
         <Caret Line="590" Column="25" TopLine="575"/>
@@ -165,6 +166,34 @@
         <Filename Value="udatosdm.pas"/>
         <Caret Line="224" Column="3" TopLine="135"/>
       </Position7>
+      <Position8>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="585" Column="33" TopLine="567"/>
+      </Position8>
+      <Position9>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="539" Column="3" TopLine="531"/>
+      </Position9>
+      <Position10>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="478" Column="3" TopLine="455"/>
+      </Position10>
+      <Position11>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="390" Column="3" TopLine="388"/>
+      </Position11>
+      <Position12>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="105" Column="3" TopLine="103"/>
+      </Position12>
+      <Position13>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="365" Column="13" TopLine="340"/>
+      </Position13>
+      <Position14>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="539" Column="3" TopLine="555"/>
+      </Position14>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

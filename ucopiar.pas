@@ -57,6 +57,8 @@ begin
     sttOrigen.Caption := Origenes.Strings[i];
     sttDestino.Caption := Destinos.Strings[i];
     sttPos.Caption := IntToStr(i + 1) + '/' + IntToStr(Origenes.Count);
+    if FileExists(Destinos.Strings[i]) then  //evitar copiar ya copiados
+      Continue;
     if CopyFile(Origenes.Strings[i], Destinos.Strings[i]) then
     begin
       if not bPreservar then //borrar el archivo de origen
