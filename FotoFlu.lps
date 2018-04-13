@@ -20,8 +20,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPrincipalFrm"/>
-        <TopLine Value="477"/>
-        <CursorPos X="3" Y="539"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="542"/>
+        <CursorPos X="21" Y="591"/>
         <UsageCount Value="228"/>
         <Bookmarks Count="1">
           <Item0 X="4" Y="306" ID="2"/>
@@ -60,13 +61,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCopiar"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
         <TopLine Value="47"/>
         <CursorPos X="45" Y="53"/>
         <UsageCount Value="208"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="udatosdm.pas"/>
@@ -74,15 +73,14 @@
         <ComponentName Value="dmDatos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="145"/>
-        <CursorPos X="17" Y="153"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="179"/>
+        <CursorPos X="17" Y="180"/>
         <UsageCount Value="179"/>
         <Bookmarks Count="1">
           <Item0 X="5" Y="483" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
@@ -138,59 +136,11 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
     </Units>
-    <JumpHistory Count="13" HistoryIndex="12">
+    <JumpHistory Count="1">
       <Position1>
         <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="590" Column="25" TopLine="575"/>
+        <Caret Line="485" Column="9" TopLine="478"/>
       </Position1>
-      <Position2>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="336" Column="3" TopLine="331"/>
-      </Position2>
-      <Position3>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="132" Column="14" TopLine="125"/>
-      </Position3>
-      <Position4>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="336" Column="3" TopLine="331"/>
-      </Position4>
-      <Position5>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="147" Column="25" TopLine="144"/>
-      </Position5>
-      <Position6>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="176" Column="25" TopLine="168"/>
-      </Position6>
-      <Position7>
-        <Filename Value="udatosdm.pas"/>
-        <Caret Line="224" Column="3" TopLine="135"/>
-      </Position7>
-      <Position8>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="585" Column="33" TopLine="567"/>
-      </Position8>
-      <Position9>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="539" Column="3" TopLine="531"/>
-      </Position9>
-      <Position10>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="478" Column="3" TopLine="455"/>
-      </Position10>
-      <Position11>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="390" Column="3" TopLine="388"/>
-      </Position11>
-      <Position12>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="105" Column="3" TopLine="103"/>
-      </Position12>
-      <Position13>
-        <Filename Value="uprincipalfrm.pas"/>
-        <Caret Line="365" Column="13" TopLine="340"/>
-      </Position13>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
