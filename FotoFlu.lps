@@ -2,9 +2,9 @@
 <CONFIG>
   <ProjectSession>
     <PathDelim Value="\"/>
-    <Version Value="10"/>
+    <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="13">
+    <Units Count="14">
       <Unit0>
         <Filename Value="FotoFlu.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -20,9 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPrincipalFrm"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="542"/>
-        <CursorPos X="21" Y="591"/>
+        <TopLine Value="204"/>
+        <CursorPos X="15" Y="85"/>
         <UsageCount Value="228"/>
         <Bookmarks Count="1">
           <Item0 X="4" Y="306" ID="2"/>
@@ -61,11 +60,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCopiar"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="47"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="41"/>
         <CursorPos X="45" Y="53"/>
         <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="udatosdm.pas"/>
@@ -73,14 +73,16 @@
         <ComponentName Value="dmDatos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="179"/>
-        <CursorPos X="17" Y="180"/>
+        <TopLine Value="145"/>
+        <CursorPos X="19" Y="150"/>
         <UsageCount Value="179"/>
         <Bookmarks Count="1">
           <Item0 X="5" Y="483" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
@@ -135,12 +137,32 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
+      <Unit13>
+        <Filename Value="udatosdm.lfm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <CursorPos X="162" Y="23"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit13>
     </Units>
-    <JumpHistory Count="1">
+    <JumpHistory Count="3" HistoryIndex="2">
       <Position1>
         <Filename Value="uprincipalfrm.pas"/>
         <Caret Line="485" Column="9" TopLine="478"/>
       </Position1>
+      <Position2>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="346" Column="30" TopLine="340"/>
+      </Position2>
+      <Position3>
+        <Filename Value="uprincipalfrm.pas"/>
+        <Caret Line="85" Column="15" TopLine="77"/>
+      </Position3>
     </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default"/>
+    </RunParams>
   </ProjectSession>
 </CONFIG>

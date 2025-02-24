@@ -3,34 +3,34 @@ object dmDatos: TdmDatos
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 409
-  HorizontalOffset = 324
-  VerticalOffset = 216
+  HorizontalOffset = 2324
+  VerticalOffset = 436
   Width = 885
   object dsExtensiones: TDataSource
     DataSet = zqExtensiones
-    left = 152
-    top = 152
+    Left = 152
+    Top = 152
   end
   object dsConfiguracion: TDataSource
     DataSet = zqConfiguracion
-    left = 48
-    top = 152
+    Left = 48
+    Top = 152
   end
   object dsDestinos: TDataSource
     DataSet = zqDestinos
-    left = 248
-    top = 152
+    Left = 248
+    Top = 152
   end
   object zcDatos: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = False
     Properties.Strings = (
       'AutoEncodeStrings='
     )
+    DisableSavepoints = False
     Port = 0
-    Protocol = 'sqlite-3'
-    left = 48
-    top = 24
+    Protocol = 'sqlite'
+    Left = 48
+    Top = 24
   end
   object zqConfiguracion: TZQuery
     Connection = zcDatos
@@ -45,8 +45,8 @@ object dmDatos: TdmDatos
       '  configuracion'
     )
     Params = <>
-    left = 48
-    top = 88
+    Left = 48
+    Top = 88
   end
   object zqExtensiones: TZQuery
     Connection = zcDatos
@@ -61,8 +61,8 @@ object dmDatos: TdmDatos
       '  indice'
     )
     Params = <>
-    left = 152
-    top = 88
+    Left = 152
+    Top = 88
     object zqExtensionesindice1: TLongintField
       FieldKind = fkData
       FieldName = 'indice'
@@ -109,8 +109,8 @@ object dmDatos: TdmDatos
       '  id'
     )
     Params = <>
-    left = 248
-    top = 88
+    Left = 248
+    Top = 88
     object zqDestinosid1: TLongintField
       FieldKind = fkData
       FieldName = 'id'
@@ -149,17 +149,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 48
-    top = 216
+    Left = 48
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqEliminaDestino: TZQuery
@@ -172,17 +168,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
-    left = 48
-    top = 279
+    Left = 48
+    Top = 279
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
   end
   object zqDirectorioAlta: TZQuery
@@ -196,17 +188,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 152
-    top = 279
+    Left = 152
+    Top = 279
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqDestinoxID: TZQuery
@@ -221,17 +209,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
-    left = 152
-    top = 216
+    Left = 152
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
   end
   object zqExtXid: TZQuery
@@ -246,17 +230,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
-    left = 248
-    top = 216
+    Left = 248
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
   end
   object zqUltId: TZQuery
@@ -266,8 +246,8 @@ object dmDatos: TdmDatos
       '  last_insert_rowid() AS id'
     )
     Params = <>
-    left = 840
-    top = 216
+    Left = 840
+    Top = 216
   end
   object zqArchivoAlta: TZQuery
     Connection = zcDatos
@@ -280,27 +260,19 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end    
       item
-        DataType = ftUnknown
         Name = 'arc'
-        ParamType = ptUnknown
       end>
-    left = 248
-    top = 280
+    Left = 248
+    Top = 280
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end    
       item
-        DataType = ftUnknown
         Name = 'arc'
-        ParamType = ptUnknown
       end>
   end
   object zqArchivoExiste: TZQuery
@@ -317,17 +289,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'arc'
-        ParamType = ptUnknown
       end>
-    left = 344
-    top = 216
+    Left = 344
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'arc'
-        ParamType = ptUnknown
       end>
   end
   object zqHaySelecciones: TZQuery
@@ -344,17 +312,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 440
-    top = 216
+    Left = 440
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqSeleccionAlta: TZQuery
@@ -368,27 +332,19 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end    
       item
-        DataType = ftUnknown
         Name = 'des'
-        ParamType = ptUnknown
       end>
-    left = 344
-    top = 279
+    Left = 344
+    Top = 279
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end    
       item
-        DataType = ftUnknown
         Name = 'des'
-        ParamType = ptUnknown
       end>
   end
   object zqSelecciones: TZQuery
@@ -410,17 +366,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 344
-    top = 88
+    Left = 344
+    Top = 88
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
     object zqSeleccionesid1: TLongintField
       FieldKind = fkData
@@ -459,8 +411,8 @@ object dmDatos: TdmDatos
   end
   object dsSelecciones: TDataSource
     DataSet = zqSelecciones
-    left = 344
-    top = 152
+    Left = 344
+    Top = 152
   end
   object zqTotSel: TZQuery
     Connection = zcDatos
@@ -475,17 +427,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 536
-    top = 216
+    Left = 536
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqTotParaBorrar: TZQuery
@@ -501,17 +449,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 640
-    top = 216
+    Left = 640
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqSeleccionBaja: TZQuery
@@ -524,17 +468,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
-    left = 440
-    top = 279
+    Left = 440
+    Top = 279
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
   end
   object zqDeselecciona: TZQuery
@@ -549,17 +489,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'sel'
-        ParamType = ptUnknown
       end>
-    left = 536
-    top = 279
+    Left = 536
+    Top = 279
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'sel'
-        ParamType = ptUnknown
       end>
   end
   object zqArchivos: TZQuery
@@ -584,17 +520,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 440
-    top = 88
+    Left = 440
+    Top = 88
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
     object zqArchivosid1: TLongintField
       FieldKind = fkData
@@ -638,8 +570,8 @@ object dmDatos: TdmDatos
   end
   object dsArchivos: TDataSource
     DataSet = zqArchivos
-    left = 440
-    top = 152
+    Left = 440
+    Top = 152
   end
   object zqSelectos: TZQuery
     Connection = zcDatos
@@ -654,17 +586,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 712
-    top = 216
+    Left = 712
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqPorBorrar: TZQuery
@@ -680,17 +608,13 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 776
-    top = 216
+    Left = 776
+    Top = 216
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zqEliminaBorrados: TZQuery
@@ -704,25 +628,19 @@ object dmDatos: TdmDatos
     )
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
-    left = 640
-    top = 279
+    Left = 640
+    Top = 279
     ParamData = <    
       item
-        DataType = ftUnknown
         Name = 'dir'
-        ParamType = ptUnknown
       end>
   end
   object zspDepuraDirectorio: TZSQLProcessor
     Params = <    
       item
-        DataType = ftUnknown
         Name = 'id'
-        ParamType = ptUnknown
       end>
     Script.Strings = (
       '-- Elminar todas las selecciones asociadas'
@@ -745,8 +663,8 @@ object dmDatos: TdmDatos
     )
     Connection = zcDatos
     Delimiter = ';'
-    left = 48
-    top = 344
+    Left = 48
+    Top = 344
   end
   object zqDirectorios: TZQuery
     Connection = zcDatos
@@ -757,7 +675,7 @@ object dmDatos: TdmDatos
       '  directorios'
     )
     Params = <>
-    left = 536
-    top = 88
+    Left = 536
+    Top = 88
   end
 end

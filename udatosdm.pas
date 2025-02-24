@@ -147,7 +147,7 @@ implementation
 
 procedure TdmDatos.DataModuleCreate(Sender: TObject);
 begin
-  FVersion := '2.4';
+  FVersion := '2.6';
   {$IFDEF WIN32}
   zcDatos.LibraryLocation := RutaEjecutable + 'sqlite3.dll';
   {$ENDIF}
